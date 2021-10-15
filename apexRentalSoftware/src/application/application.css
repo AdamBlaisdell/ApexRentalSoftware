@@ -1,0 +1,23 @@
+/* JavaFX CSS  */
+
+.root{
+	-fx-background-color:"#e1e8ed";
+}
+
+.table-view .column-header .label{
+	-fx-alignment:center-left;
+}
+
+.button{
+	-fx-pref-width:120;
+	-fx-font-size:16;
+	    -fx-background-color: 
+        #3c7fb1,
+		#c9e8ff,
+        linear-gradient(#e8f5ff 0%, #cfeaff 49%, #b8e0ff 50%, #a1d5ff 100%);
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 3,2,1;
+    -fx-padding: 2 20 2 20;
+    -fx-text-fill: black;
+    -fx-font-size: 15px;
+}
