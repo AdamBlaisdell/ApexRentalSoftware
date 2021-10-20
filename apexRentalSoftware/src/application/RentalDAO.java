@@ -48,7 +48,7 @@ package application;
 		}
 		
 		// Method to delete a Rental 
-		public static boolean deleteRental(int rentalID) {
+		public boolean deleteRental(int rentalID) {
 			boolean result = false; 
 			String sqlStatement = new String("DELETE FROM rental WHERE rentalID = ?"); 
 			PreparedStatement prepSqlStatement = null;

@@ -45,4 +45,27 @@ package application;
 			}
 			return null; 
 		}
+		
+		// Method to delete a Vendor 
+		public boolean deleteVendor(int vendorID) {
+			boolean result = false; 
+			String sqlStatement = new String("DELETE FROM vendor WHERE vendorID = ?"); 
+			PreparedStatement prepSqlStatement = null;
+			try {
+				prepSqlStatement = connection.prepareStatement(sqlStatement);
+				prepSqlStatement.setString(1, String.valueOf(vendorID));
+				int rowCount = prepSqlStatement.executeUpdate();
+				if (rowCount != 1){
+					result = false; 
+				} 
+				else {
+					result = true;
+				}
+			}
+			catch (SQLException ex){
+				ex.printStackTrace();
+				result = false;
+			}
+			return result;
+		}
 	}

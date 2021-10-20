@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.collections.ObservableList;
@@ -60,13 +61,17 @@ public class Main extends Application {
 			TableView<Vendor> vendorTable = new TableView<>();
 			
 			// create buttons
-			Button rentalButton= new Button("Rentals");
+			Button rentalButton = new Button("Rentals");
 			Button customerButton = new Button("Customers");
 			Button itemButton = new Button("Inventory");
 			Button vendorButton = new Button("Vendors");
 			Button deleteButton = new Button("Delete");
 			
-			// button layout
+			// create labels
+			Label outputLabel = new Label("Apex Rental Software Version 1.0 ");
+			outputLabel.setId("outputLabel");
+			
+			// element layout
 			rentalButton.setLayoutX(30);
 			rentalButton.setLayoutY(40);
 			customerButton.setLayoutX(30);
@@ -77,6 +82,9 @@ public class Main extends Application {
 			vendorButton.setLayoutY(160);
 			deleteButton.setLayoutX(190);
 			deleteButton.setLayoutY(390);
+			outputLabel.setLayoutX(330);
+			outputLabel.setLayoutY(390);
+			
 		    
 		    //RENTAL TABLE
 	        TableColumn<Rental, Number> rentalIDColumn = new TableColumn<>("Rental ID");
@@ -212,7 +220,7 @@ public class Main extends Application {
 		    vendorTable.setPrefHeight(tableh);
 		    
 			// add tables to panes
-			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton, deleteButton);
+			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton, deleteButton, outputLabel);
 			customerPane.getChildren().add(customerTable);
 			itemPane.getChildren().add(itemTable);
 			vendorPane.getChildren().add(vendorTable);
@@ -234,7 +242,9 @@ public class Main extends Application {
 		        {
 		        	if (primaryStage.getScene() != rentalScene) {
 		            primaryStage.setScene(rentalScene);
-					rentalPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+					rentalPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton, outputLabel); 
+					rentalTable.getSelectionModel().clearSelection();
+		        	}
 		        }
 		    };
 		    rentalButton.setOnAction(rentalButtonEvent);  
@@ -245,27 +255,35 @@ public class Main extends Application {
 		        {
 		        	if (primaryStage.getScene() != customerScene) {
 		            primaryStage.setScene(customerScene);
-					customerPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+					customerPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton, outputLabel);
+					customerTable.getSelectionModel().clearSelection();
+					}
 		        }
 		    };	        
 		    customerButton.setOnAction(customerButtonEvent);  
+		    
 		    // item button event
 		    EventHandler<ActionEvent> itemButtonEvent = new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent e)
 		        {
 		        	if (primaryStage.getScene() != itemScene) {
 		            primaryStage.setScene(itemScene);
-					itemPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+					itemPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton, outputLabel); 
+					itemTable.getSelectionModel().clearSelection();
+		        	}
 		        }
 		    };	        
 		    itemButton.setOnAction(itemButtonEvent);  
+		    
 		    // vendor button event
 		    EventHandler<ActionEvent> vendorButtonEvent = new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent e)
 		        {
 		        	if (primaryStage.getScene() != vendorScene) {
 		            primaryStage.setScene(vendorScene);
-					vendorPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+					vendorPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton, outputLabel); 
+					vendorTable.getSelectionModel().clearSelection();
+		        	}
 		        }
 		    };	        
 		    vendorButton.setOnAction(vendorButtonEvent);  
@@ -274,11 +292,45 @@ public class Main extends Application {
 		    EventHandler<ActionEvent> deleteButtonEvent = new EventHandler<ActionEvent>() {
 		        public void handle(ActionEvent e)
 		        {
+		        	// delete from rental table
 		        	if (primaryStage.getScene() == rentalScene && rentalTable.getSelectionModel().getSelectedItem() != null) {
 		        		Rental rentalToDelete = rentalTable.getSelectionModel().getSelectedItem();
-		        		int idToDelete = rentalToDelete.getRentalID();
-		        		RentalDAO.deleteRental(idToDelete);
+		        		if (rentalDAO.deleteRental(rentalToDelete.getRentalID()) == false) {
+		        			outputLabel.setText("Could not delete Rental");
+		        		} else {
 		        		rentalTable.getItems().removeAll(rentalToDelete);
+		        		outputLabel.setText("Rental Deleted");
+		        		}
+		        	}
+		        	// delete from customer table
+		        	if (primaryStage.getScene() == customerScene && customerTable.getSelectionModel().getSelectedItem() != null) {
+		        		Customer customerToDelete = customerTable.getSelectionModel().getSelectedItem();
+		        		if (customerDAO.deleteCustomer(customerToDelete.getCustomerID()) == false) {
+		        			outputLabel.setText("Could not delete customer.\nPlease make sure to delete all rentals with this customer first."); 
+		        			} else {
+		        			customerTable.getItems().removeAll(customerToDelete);
+		        			outputLabel.setText("Customer Deleted");
+		        			}
+		        	}
+		        	// delete from item table
+		        	if (primaryStage.getScene() == itemScene && itemTable.getSelectionModel().getSelectedItem() != null) {
+		        		Item itemToDelete = itemTable.getSelectionModel().getSelectedItem();
+		        		if (itemDAO.deleteItem(itemToDelete.getItemID()) == false) {
+		        			outputLabel.setText("Could not delete item.\nPlease make sure to delete all rentals with this item first."); 
+		        			} else {
+		        			itemTable.getItems().removeAll(itemToDelete);
+		        			outputLabel.setText("Item Deleted");
+		        			}
+		        	}
+		        	// delete from vendor table
+		        	if (primaryStage.getScene() == vendorScene && vendorTable.getSelectionModel().getSelectedItem() != null) {
+		        		Vendor vendorToDelete = vendorTable.getSelectionModel().getSelectedItem();
+		        		if (vendorDAO.deleteVendor(vendorToDelete.getVendorID()) == false) {
+		        			outputLabel.setText("Could not delete vendor.\nPlease make sure to delete all items with this vendor first."); 
+		        			} else {
+		        			vendorTable.getItems().removeAll(vendorToDelete);
+		        			outputLabel.setText("Vendor Deleted");
+		        			}
 		        	}
 		        }
 		    };	        

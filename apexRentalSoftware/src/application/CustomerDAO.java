@@ -43,4 +43,27 @@ public class CustomerDAO {
 		}
 		return null; 
 	}
+	
+	// Method to delete a Customer 
+	public boolean deleteCustomer(int customerID) {
+		boolean result = false; 
+		String sqlStatement = new String("DELETE FROM customer WHERE customerID = ?"); 
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
+			prepSqlStatement.setString(1, String.valueOf(customerID));
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1){
+				result = false; 
+			} 
+			else {
+				result = true;
+			}
+		}
+		catch (SQLException ex){
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
 }

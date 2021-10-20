@@ -43,4 +43,27 @@ public class ItemDAO {
 		}
 		return null; 
 	}
+	
+	// Method to delete an Item 
+	public boolean deleteItem(int itemID) {
+		boolean result = false; 
+		String sqlStatement = new String("DELETE FROM item WHERE itemID = ?"); 
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
+			prepSqlStatement.setString(1, String.valueOf(itemID));
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1){
+				result = false; 
+			} 
+			else {
+				result = true;
+			}
+		}
+		catch (SQLException ex){
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
 }
