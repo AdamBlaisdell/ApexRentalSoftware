@@ -64,6 +64,7 @@ public class Main extends Application {
 			Button customerButton = new Button("Customers");
 			Button itemButton = new Button("Inventory");
 			Button vendorButton = new Button("Vendors");
+			Button deleteButton = new Button("Delete");
 			
 			// button layout
 			rentalButton.setLayoutX(30);
@@ -74,49 +75,8 @@ public class Main extends Application {
 			itemButton.setLayoutY(120);
 			vendorButton.setLayoutX(30);
 			vendorButton.setLayoutY(160);
-			
-		    // BUTTON ACTION EVENTS
-			// rental button event
-		    EventHandler<ActionEvent> rentalButtonEvent = new EventHandler<ActionEvent>() {
-		        public void handle(ActionEvent e)
-		        {
-		        	if (primaryStage.getScene() != rentalScene) {
-		            primaryStage.setScene(rentalScene);
-					rentalPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton); }
-		        }
-		    };
-		    rentalButton.setOnAction(rentalButtonEvent);  
-		    
-		    // customer button event
-		    EventHandler<ActionEvent> customerButtonEvent = new EventHandler<ActionEvent>() {
-		        public void handle(ActionEvent e)
-		        {
-		        	if (primaryStage.getScene() != customerScene) {
-		            primaryStage.setScene(customerScene);
-					customerPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton); }
-		        }
-		    };	        
-		    customerButton.setOnAction(customerButtonEvent);  
-		    // item button event
-		    EventHandler<ActionEvent> itemButtonEvent = new EventHandler<ActionEvent>() {
-		        public void handle(ActionEvent e)
-		        {
-		        	if (primaryStage.getScene() != itemScene) {
-		            primaryStage.setScene(itemScene);
-					itemPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton); }
-		        }
-		    };	        
-		    itemButton.setOnAction(itemButtonEvent);  
-		    // vendor button event
-		    EventHandler<ActionEvent> vendorButtonEvent = new EventHandler<ActionEvent>() {
-		        public void handle(ActionEvent e)
-		        {
-		        	if (primaryStage.getScene() != vendorScene) {
-		            primaryStage.setScene(vendorScene);
-					vendorPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton); }
-		        }
-		    };	        
-		    vendorButton.setOnAction(vendorButtonEvent);  
+			deleteButton.setLayoutX(190);
+			deleteButton.setLayoutY(390);
 		    
 		    //RENTAL TABLE
 	        TableColumn<Rental, Number> rentalIDColumn = new TableColumn<>("Rental ID");
@@ -250,9 +210,9 @@ public class Main extends Application {
 		    vendorTable.setLayoutY(tabley);
 		    vendorTable.setPrefWidth(tablew);
 		    vendorTable.setPrefHeight(tableh);
-
+		    
 			// add tables to panes
-			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton);
+			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton, deleteButton);
 			customerPane.getChildren().add(customerTable);
 			itemPane.getChildren().add(itemTable);
 			vendorPane.getChildren().add(vendorTable);
@@ -266,10 +226,68 @@ public class Main extends Application {
 			// set scene and show stage
 			primaryStage.setScene(rentalScene);
 			primaryStage.show();
+			
+		    // BUTTON ACTION EVENTS
+			// rental button event
+		    EventHandler<ActionEvent> rentalButtonEvent = new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent e)
+		        {
+		        	if (primaryStage.getScene() != rentalScene) {
+		            primaryStage.setScene(rentalScene);
+					rentalPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+		        }
+		    };
+		    rentalButton.setOnAction(rentalButtonEvent);  
+		    
+		    // customer button event
+		    EventHandler<ActionEvent> customerButtonEvent = new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent e)
+		        {
+		        	if (primaryStage.getScene() != customerScene) {
+		            primaryStage.setScene(customerScene);
+					customerPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+		        }
+		    };	        
+		    customerButton.setOnAction(customerButtonEvent);  
+		    // item button event
+		    EventHandler<ActionEvent> itemButtonEvent = new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent e)
+		        {
+		        	if (primaryStage.getScene() != itemScene) {
+		            primaryStage.setScene(itemScene);
+					itemPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+		        }
+		    };	        
+		    itemButton.setOnAction(itemButtonEvent);  
+		    // vendor button event
+		    EventHandler<ActionEvent> vendorButtonEvent = new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent e)
+		        {
+		        	if (primaryStage.getScene() != vendorScene) {
+		            primaryStage.setScene(vendorScene);
+					vendorPane.getChildren().addAll(rentalButton, customerButton, itemButton, vendorButton, deleteButton); }
+		        }
+		    };	        
+		    vendorButton.setOnAction(vendorButtonEvent);  
+		    
+		    // delete button event
+		    EventHandler<ActionEvent> deleteButtonEvent = new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent e)
+		        {
+		        	if (primaryStage.getScene() == rentalScene && rentalTable.getSelectionModel().getSelectedItem() != null) {
+		        		Rental rentalToDelete = rentalTable.getSelectionModel().getSelectedItem();
+		        		int idToDelete = rentalToDelete.getRentalID();
+		        		RentalDAO.deleteRental(idToDelete);
+		        		rentalTable.getItems().removeAll(rentalToDelete);
+		        	}
+		        }
+		    };	        
+		    deleteButton.setOnAction(deleteButtonEvent);  
 		
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+			
 	}
 
 	public static void main(String[] args) {	

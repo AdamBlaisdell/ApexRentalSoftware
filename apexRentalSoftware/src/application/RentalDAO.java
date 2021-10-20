@@ -46,4 +46,51 @@ package application;
 			}
 			return null; 
 		}
+		
+		// Method to delete a Rental 
+		public static boolean deleteRental(int rentalID) {
+			boolean result = false; 
+			String sqlStatement = new String("DELETE FROM rental WHERE rentalID = ?"); 
+			PreparedStatement prepSqlStatement = null;
+			try {
+				prepSqlStatement = connection.prepareStatement(sqlStatement);
+				prepSqlStatement.setString(1, String.valueOf(rentalID));
+				int rowCount = prepSqlStatement.executeUpdate();
+				if (rowCount != 1){
+					result = false; 
+				} 
+				else {
+					result = true;
+				}
+			}
+			catch (SQLException ex){
+				ex.printStackTrace();
+				result = false;
+			}
+			return result;
+		}
+		
+		// Method to return a Rental 
+		public static boolean returnRental(int rentalID) {
+			boolean result = false; 
+			String sqlStatement = new String("DELETE FROM rental WHERE rentalID = ?"); 
+			PreparedStatement prepSqlStatement = null;
+			try {
+				prepSqlStatement = connection.prepareStatement(sqlStatement);
+				prepSqlStatement.setString(1, String.valueOf(rentalID));
+				int rowCount = prepSqlStatement.executeUpdate();
+				if (rowCount != 1){
+					result = false; 
+				} 
+				else {
+					result = true;
+				}
+			}
+			catch (SQLException ex){
+				ex.printStackTrace();
+				result = false;
+			}
+			return result;
+		}
+		
 	}
