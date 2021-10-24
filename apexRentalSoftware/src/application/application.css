@@ -22,6 +22,11 @@
     -fx-font-size: 15px;
 }
 
+.combo-box{
+	-fx-pref-width: 200;
+	
+}
+
 #outputLabel{
 	-fx-font-size:17;
 }
