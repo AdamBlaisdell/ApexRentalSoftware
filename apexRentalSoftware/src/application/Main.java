@@ -147,8 +147,8 @@ public class Main extends Application {
 			customerCityColumn.setCellValueFactory(cellData -> cellData.getValue().cityProperty());
 			TableColumn<Customer, String> customerStateColumn = new TableColumn<>("State");
 			customerStateColumn.setCellValueFactory(cellData -> cellData.getValue().stateProperty());
-			TableColumn<Customer, Number> customerPhoneColumn = new TableColumn<>("Phone #");
-			customerPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
+			TableColumn<Customer, String> customerPhoneColumn = new TableColumn<>("Phone #");
+			customerPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty().asString("%.0f"));
 			// add columns to table
 			customerTable.getColumns().addAll(customerIDColumn, customerNameColumn, customerAddressColumn,
 					customerCityColumn, customerStateColumn, customerPhoneColumn);
@@ -215,8 +215,8 @@ public class Main extends Application {
 			vendorStateColumn.setCellValueFactory(cellData -> cellData.getValue().stateProperty());
 			TableColumn<Vendor, String> vendorWebsiteColumn = new TableColumn<>("Website");
 			vendorWebsiteColumn.setCellValueFactory(cellData -> cellData.getValue().websiteProperty());
-			TableColumn<Vendor, Number> vendorPhoneColumn = new TableColumn<>("Phone #");
-			vendorPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
+			TableColumn<Vendor, String> vendorPhoneColumn = new TableColumn<>("Phone #");
+			vendorPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty().asString("%.0f"));
 			// add columns to table
 			vendorTable.getColumns().addAll(vendorIDColumn, vendorNameColumn, vendorAddressColumn, vendorCityColumn,
 					vendorStateColumn, vendorWebsiteColumn, vendorPhoneColumn);
