@@ -43,6 +43,33 @@ public class VendorDAO {
 		}
 		return null;
 	}
+	
+	// method to insert a Vendor
+	public boolean insertVendor(Vendor vendor) {
+		boolean result = false;
+		String sqlStatement = new String("INSERT INTO vendor VALUES (NULL, ?, ?, ?, ?, ?, ?)");
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);		
+			prepSqlStatement.setString(1, vendor.getName());
+			prepSqlStatement.setString(2, vendor.getAddress());
+			prepSqlStatement.setString(3, vendor.getCity());
+			prepSqlStatement.setString(4, vendor.getState());
+			prepSqlStatement.setString(5, vendor.getWebsite());
+			prepSqlStatement.setDouble(6, vendor.getPhone());
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1) {
+				result = false;
+			} else {
+				result = true;
+			}		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
+
 
 	// Method to delete a Vendor
 	public boolean deleteVendor(int vendorID) {

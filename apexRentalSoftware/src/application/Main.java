@@ -1,7 +1,7 @@
 /*
  * Apex Rental Software 
  * Author: Adam Blaisdell
- * Last Edit: 10/15/2021
+ * Last Edit: 10/27/2021
  */
 
 package application;
@@ -33,7 +33,7 @@ public class Main extends Application {
 		int tabley = 15;
 		int tablew = 640;
 		int tableh = 370;
-		String defaultPrompt = "Apex Rental Software Increment 3 ";
+		String defaultPrompt = "Apex Rental Software Increment 4 ";
 
 		try {
 
@@ -72,6 +72,7 @@ public class Main extends Application {
 			Button deleteButton = new Button("Delete");
 			Button rentalInsertButton = new Button("Insert");
 			Button vendorInsertButton = new Button("Insert");
+			Button rentalReturnButton = new Button("Return");
 
 			// create combo boxes
 			ComboBox<Customer> rentalCustomerBox = new ComboBox<>();
@@ -81,17 +82,19 @@ public class Main extends Application {
 			// create labels
 			Label outputLabel = new Label(defaultPrompt);
 			outputLabel.setId("outputLabel");
+			Label vendorNameLabel = new Label("Name");
 			
 			// create text boxes
-			TextField vendorNameField = new TextField();
-			TextField vendorAddressField = new TextField();
-			TextField vendorCityField = new TextField();
-			TextField vendorStateField = new TextField();
-			TextField vendorWebsiteField = new TextField();
-			TextField vendorPhoneField = new TextField();
-			TextField itemNameField = new TextField();
-			TextField itemSerialField = new TextField();
-			TextField itemCostField = new TextField();
+			TextField vendorNameField = new TextField("Name");
+			TextField vendorAddressField = new TextField("Address");
+			TextField vendorCityField = new TextField("City");
+			TextField vendorStateField = new TextField("State");
+			TextField vendorWebsiteField = new TextField("Website");
+			TextField vendorPhoneField = new TextField("Phone");
+			
+			TextField itemNameField = new TextField("Name");
+			TextField itemSerialField = new TextField("Serial");
+			TextField itemCostField = new TextField("Cost");
 			
 			// element layout
 			rentalButton.setLayoutX(30);
@@ -107,32 +110,48 @@ public class Main extends Application {
 			rentalInsertButton.setLayoutX(600);
 			rentalInsertButton.setLayoutY(440);
 			vendorInsertButton.setLayoutX(500);
-			vendorInsertButton.setLayoutY(518);
+			vendorInsertButton.setLayoutY(500);
+			rentalReturnButton.setLayoutX(315);
+			rentalReturnButton.setLayoutY(390);
 
-			outputLabel.setLayoutX(330);
-			outputLabel.setLayoutY(390);
+			outputLabel.setLayoutX(300);
+			outputLabel.setLayoutY(530);
 
 			rentalCustomerBox.setLayoutX(190);
 			rentalCustomerBox.setLayoutY(440);
 			rentalItemBox.setLayoutX(395);
 			rentalItemBox.setLayoutY(440);
 			
+			vendorNameLabel.setLayoutX(190);
+			vendorNameLabel.setLayoutY(420);
+			
 			vendorStateField.setMaxWidth(50);
 			vendorNameField.setLayoutX(190);
-			vendorNameField.setLayoutY(470);
+			vendorNameField.setLayoutY(450);
 			vendorAddressField.setLayoutX(340);
-			vendorAddressField.setLayoutY(470);
+			vendorAddressField.setLayoutY(450);
 			vendorCityField.setLayoutX(490);
-			vendorCityField.setLayoutY(470);
+			vendorCityField.setLayoutY(450);
 			vendorStateField.setLayoutX(640);
-			vendorStateField.setLayoutY(470);
+			vendorStateField.setLayoutY(450);
 			vendorWebsiteField.setLayoutX(190);
-			vendorWebsiteField.setLayoutY(520);
+			vendorWebsiteField.setLayoutY(500);
 			vendorPhoneField.setLayoutX(340);
-			vendorPhoneField.setLayoutY(520);
+			vendorPhoneField.setLayoutY(500);
 			
-			itemVendorBox.setLayoutX(400);
-			itemVendorBox.setLayoutY(400);
+			itemNameField.setLayoutX(315);
+			itemNameField.setLayoutY(450);
+			itemNameField.setMaxWidth(100);
+			itemSerialField.setLayoutX(420);
+			itemSerialField.setLayoutY(450);
+			itemCostField.setLayoutX(570);
+			itemCostField.setLayoutY(450);
+			itemCostField.setMaxWidth(100);
+			
+			itemVendorBox.setLayoutX(190);
+			itemVendorBox.setLayoutY(450);
+			itemVendorBox.setMaxWidth(120);
+			
 
 			// RENTAL TABLE
 			TableColumn<Rental, Number> rentalIDColumn = new TableColumn<>("Rental ID");
@@ -276,11 +295,11 @@ public class Main extends Application {
 
 			// add tables and elements to panes
 			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton,
-					deleteButton, outputLabel, rentalInsertButton, rentalCustomerBox, rentalItemBox);
+					deleteButton, outputLabel, rentalInsertButton, rentalCustomerBox, rentalItemBox, rentalReturnButton);
 			customerPane.getChildren().add(customerTable);
 			itemPane.getChildren().addAll(itemTable, itemNameField, itemSerialField, itemCostField, itemVendorBox);
 			vendorPane.getChildren().addAll(vendorTable, vendorNameField, vendorAddressField, 
-					vendorCityField, vendorStateField, vendorWebsiteField, vendorPhoneField, vendorInsertButton);
+					vendorCityField, vendorStateField, vendorWebsiteField, vendorPhoneField, vendorInsertButton, vendorNameLabel);
 
 			// add css to scenes
 			rentalScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -389,6 +408,17 @@ public class Main extends Application {
 			};
 			rentalInsertButton.setOnAction(rentalInsertButtonEvent);
 
+			// insert vendor action event
+			EventHandler<ActionEvent> insertVendorActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					Vendor vendorToInsert = new Vendor(0,"Wiha","red rd","Oviedo","FL","google.com",(double) 810290);
+					if(vendorDAO.insertVendor(vendorToInsert) == true) {
+						outputLabel.setText("Vendor inserted");
+					} else {outputLabel.setText("Could not insert Vendor");}
+				}
+			};
+			vendorInsertButton.setOnAction(insertVendorActionEvent);
+			
 			// delete button event
 			EventHandler<ActionEvent> deleteButtonEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
