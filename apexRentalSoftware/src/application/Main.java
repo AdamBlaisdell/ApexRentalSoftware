@@ -242,6 +242,7 @@ public class Main extends Application {
 			customerStateColumn.setCellValueFactory(cellData -> cellData.getValue().stateProperty());
 			TableColumn<Customer, String> customerPhoneColumn = new TableColumn<>("Phone #");
 			customerPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty().asString("%.0f"));
+
 			// add columns to table
 			customerTable.getColumns().addAll(customerIDColumn, customerNameColumn, customerAddressColumn,
 					customerCityColumn, customerStateColumn, customerPhoneColumn);
@@ -527,15 +528,22 @@ public class Main extends Application {
 			// insert customer action event
 			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					
+					if(customerNameField.getText() != "" && (customerStateField.getText().length() == 2 || customerStateField.getText().length() == 0)) {
 					String customerNameToInsert = customerNameField.getText();
 					String customerAddressToInsert = customerAddressField.getText();
 					String customerCityToInsert = customerCityField.getText();
 					String customerStateToInsert = customerStateField.getText();
-					Double customerPhoneToInsert = Double.valueOf(customerPhoneField.getText());		
+					
+					double customerPhoneToInsert = 0;
+					try {
+						customerPhoneToInsert = Double.valueOf(customerPhoneField.getText());	
+					} catch(Exception ex){
+						
+					}
+					
 					Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert,
 							customerCityToInsert, customerStateToInsert, customerPhoneToInsert);
-
+					
 					if (customerDAO.insertCustomer(customerToInsert) == true) {
 						outputLabel.setText("Customer inserted");
 						// clear text fields
@@ -555,7 +563,8 @@ public class Main extends Application {
 					} else {
 						outputLabel.setText("Could not insert Vendor");
 					}
-				}
+				} else {outputLabel.setText("Could not insert Vendor\nInvalid user input");}
+					} 
 			};
 			customerInsertButton.setOnAction(insertCustomerActionEvent);
 
