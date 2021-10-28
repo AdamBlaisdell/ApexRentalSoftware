@@ -27,13 +27,14 @@ public class ItemDAO {
 			rs = prepSqlStatement.executeQuery();
 			while (rs.next()) {
 				int tempItemID = rs.getInt(1);
+				int tempVendorID = rs.getInt(2);
 				String tempVendorName = rs.getString(8);
 				String tempName = rs.getString(3);
 				String tempSerial = rs.getString(4);
 				Boolean tempStocked = rs.getBoolean(5);
 				double tempCost = rs.getDouble(6);
 
-				itemList.add(new Item(tempItemID, tempVendorName, tempName, tempSerial, tempStocked, tempCost));
+				itemList.add(new Item(tempItemID, tempVendorID, tempVendorName, tempName, tempSerial, tempStocked, tempCost));
 			}
 			return itemList;
 		} catch (SQLException ex) {
@@ -41,7 +42,31 @@ public class ItemDAO {
 		}
 		return null;
 	}
-
+	
+	// method to insert an Item
+	public boolean insertItem(Item item) {
+		boolean result = false;
+		String sqlStatement = new String("INSERT INTO item VALUES (NULL, ?, ?, ?, 1, ?)");
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);	
+			prepSqlStatement.setInt(1, item.getVendorID());
+			prepSqlStatement.setString(2, item.getName());
+			prepSqlStatement.setString(3, item.getSerial());
+			prepSqlStatement.setDouble(4, item.getCost());
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1) {
+				result = false;
+			} else {
+				result = true;
+			}		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
+	
 	// Method to delete an Item
 	public boolean deleteItem(int itemID) {
 		boolean result = false;

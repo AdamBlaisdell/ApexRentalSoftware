@@ -14,6 +14,7 @@ public class Item {
 
 	// attributes
 	private final IntegerProperty itemID;
+	private final IntegerProperty vendorID;
 	private final StringProperty vendorName;
 	private final StringProperty name;
 	private final StringProperty serial;
@@ -21,8 +22,9 @@ public class Item {
 	private final DoubleProperty cost;
 
 	// ctor
-	public Item(Integer itemID, String vendorName, String name, String serial, Boolean stocked, Double cost) {
+	public Item(Integer itemID, Integer vendorID, String vendorName, String name, String serial, Boolean stocked, Double cost) {
 		this.itemID = new SimpleIntegerProperty(itemID);
+		this.vendorID = new SimpleIntegerProperty(vendorID);
 		this.vendorName = new SimpleStringProperty(vendorName);
 		this.name = new SimpleStringProperty(name);
 		this.serial = new SimpleStringProperty(serial);
@@ -41,6 +43,18 @@ public class Item {
 
 	public IntegerProperty itemIDProperty() {
 		return this.itemID;
+	}
+	
+	public Integer getVendorID() {
+		return this.vendorID.get();
+	}
+
+	public void setVendorID(Integer vendorID) {
+		this.vendorID.set(vendorID);
+	}
+
+	public IntegerProperty vendorIDProperty() {
+		return this.vendorID;
 	}
 
 	public String getVendorName() {

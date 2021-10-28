@@ -7,6 +7,10 @@
 package application;
 
 import javafx.application.Application;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -72,6 +76,8 @@ public class Main extends Application {
 			Button deleteButton = new Button("Delete");
 			Button rentalInsertButton = new Button("Insert");
 			Button vendorInsertButton = new Button("Insert");
+			Button itemInsertButton = new Button("Insert");
+			Button customerInsertButton = new Button("Insert");
 			Button rentalReturnButton = new Button("Return");
 
 			// create combo boxes
@@ -94,6 +100,13 @@ public class Main extends Application {
 			TextField itemNameField = new TextField("Name");
 			TextField itemSerialField = new TextField("Serial");
 			TextField itemCostField = new TextField("Cost");
+			
+			TextField customerNameField = new TextField("Name");
+			TextField customerAddressField = new TextField("Address");
+			TextField customerCityField = new TextField("City");
+			TextField customerStateField = new TextField("State");
+			TextField customerPhoneField = new TextField("Phone");
+			
 
 			// element layout
 			rentalButton.setLayoutX(30);
@@ -108,11 +121,15 @@ public class Main extends Application {
 			deleteButton.setLayoutY(390);
 			rentalInsertButton.setLayoutX(600);
 			rentalInsertButton.setLayoutY(440);
-			vendorInsertButton.setLayoutX(500);
+			itemInsertButton.setLayoutX(675);
+			itemInsertButton.setLayoutY(450);
+			customerInsertButton.setLayoutX(345);
+			customerInsertButton.setLayoutY(500);
+			vendorInsertButton.setLayoutX(495);
 			vendorInsertButton.setLayoutY(500);
 			rentalReturnButton.setLayoutX(315);
 			rentalReturnButton.setLayoutY(390);
-
+			
 			outputLabel.setLayoutX(300);
 			outputLabel.setLayoutY(530);
 
@@ -137,6 +154,18 @@ public class Main extends Application {
 			vendorWebsiteField.setLayoutY(500);
 			vendorPhoneField.setLayoutX(340);
 			vendorPhoneField.setLayoutY(500);
+			
+			customerStateField.setMaxWidth(50);
+			customerNameField.setLayoutX(190);
+			customerNameField.setLayoutY(450);
+			customerAddressField.setLayoutX(340);
+			customerAddressField.setLayoutY(450);
+			customerCityField.setLayoutX(490);
+			customerCityField.setLayoutY(450);
+			customerStateField.setLayoutX(640);
+			customerStateField.setLayoutY(450);
+			customerPhoneField.setLayoutX(190);
+			customerPhoneField.setLayoutY(500);
 
 			itemNameField.setLayoutX(315);
 			itemNameField.setLayoutY(450);
@@ -296,8 +325,8 @@ public class Main extends Application {
 			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton,
 					deleteButton, outputLabel, rentalInsertButton, rentalCustomerBox, rentalItemBox,
 					rentalReturnButton);
-			customerPane.getChildren().add(customerTable);
-			itemPane.getChildren().addAll(itemTable, itemNameField, itemSerialField, itemCostField, itemVendorBox);
+			customerPane.getChildren().addAll(customerTable, customerNameField, customerAddressField, customerCityField, customerStateField, customerPhoneField, customerInsertButton);
+			itemPane.getChildren().addAll(itemTable, itemNameField, itemSerialField, itemCostField, itemVendorBox, itemInsertButton);
 			vendorPane.getChildren().addAll(vendorTable, vendorNameField, vendorAddressField, vendorCityField,
 					vendorStateField, vendorWebsiteField, vendorPhoneField, vendorInsertButton, vendorNameLabel);
 
@@ -410,6 +439,39 @@ public class Main extends Application {
 			};
 			rentalInsertButton.setOnAction(rentalInsertButtonEvent);
 
+			// insert item action event
+			EventHandler<ActionEvent> insertItemActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					
+					int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
+					String itemNameToInsert = itemNameField.getText();
+					String itemSerialToInsert = itemSerialField.getText();
+					Double itemCostToInsert = Double.valueOf(itemCostField.getText());
+					
+					Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert,
+							itemSerialToInsert, true, itemCostToInsert);
+					
+					if (itemDAO.insertItem(itemToInsert) == true) {
+						outputLabel.setText("Item inserted");
+						// clear text fields
+						itemNameField.clear();
+						itemSerialField.clear();
+						itemCostField.clear();
+	
+						// refresh item list
+						itemList.clear();
+						itemObsList.clear();
+						ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+						for (Item aItem : itemList) {
+							itemObsList.add(aItem);
+						}
+					} else {
+						outputLabel.setText("Could not insert Item");
+					}
+				}
+			};
+			itemInsertButton.setOnAction(insertItemActionEvent);	
+			
 			// insert vendor action event
 			EventHandler<ActionEvent> insertVendorActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
@@ -443,6 +505,41 @@ public class Main extends Application {
 				}
 			};
 			vendorInsertButton.setOnAction(insertVendorActionEvent);
+			
+			// insert customer action event
+			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					
+					String customerNameToInsert = customerNameField.getText();
+					String customerAddressToInsert = customerAddressField.getText();
+					String customerCityToInsert = customerCityField.getText();
+					String customerStateToInsert = customerStateField.getText();
+					Double customerPhoneToInsert = Double.valueOf(customerPhoneField.getText());		
+					Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert,
+							customerCityToInsert, customerStateToInsert, customerPhoneToInsert);
+
+					if (customerDAO.insertCustomer(customerToInsert) == true) {
+						outputLabel.setText("Customer inserted");
+						// clear text fields
+						customerNameField.clear();
+						customerAddressField.clear();
+						customerCityField.clear();
+						customerStateField.clear();
+						customerPhoneField.clear();
+						
+						// refresh customer list
+						customerList.clear();
+						customerObsList.clear();		
+						ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
+						for (Customer aCustomer : customerList) {
+							customerObsList.add(aCustomer);
+						}
+					} else {
+						outputLabel.setText("Could not insert Vendor");
+					}
+				}
+			};
+			customerInsertButton.setOnAction(insertCustomerActionEvent);
 
 			// return rental button event
 			EventHandler<ActionEvent> returnRentalEvent = new EventHandler<ActionEvent>() {
@@ -457,7 +554,7 @@ public class Main extends Application {
 						for (Rental aRental : rentalList) {
 							rentalObsList.add(aRental);
 						}
-						// refresh item lists
+						// refresh rental lists
 						itemList.clear();
 						itemObsList.clear();
 						ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
