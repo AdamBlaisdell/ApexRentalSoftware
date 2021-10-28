@@ -7,10 +7,6 @@
 package application;
 
 import javafx.application.Application;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -37,6 +33,9 @@ public class Main extends Application {
 		int tabley = 15;
 		int tablew = 640;
 		int tableh = 370;
+		// text box location height(y)
+		int line1 = 430;
+		int line2 = 460;
 		String defaultPrompt = "Apex Rental Software Increment 4 ";
 
 		try {
@@ -82,30 +81,46 @@ public class Main extends Application {
 
 			// create combo boxes
 			ComboBox<Customer> rentalCustomerBox = new ComboBox<>();
+			rentalCustomerBox.setPromptText("Customer");
 			ComboBox<Item> rentalItemBox = new ComboBox<>();
+			rentalItemBox.setPromptText("Item");
 			ComboBox<Vendor> itemVendorBox = new ComboBox<>();
+			itemVendorBox.setPromptText("Vendor");
 
 			// create labels
 			Label outputLabel = new Label(defaultPrompt);
 			outputLabel.setId("outputLabel");
-			Label vendorNameLabel = new Label("Name");
 
-			// create text boxes
-			TextField vendorNameField = new TextField("Name");
-			TextField vendorAddressField = new TextField("Address");
-			TextField vendorCityField = new TextField("City");
-			TextField vendorStateField = new TextField("State");
-			TextField vendorWebsiteField = new TextField("Website");
-			TextField vendorPhoneField = new TextField("Phone");
-			TextField itemNameField = new TextField("Name");
-			TextField itemSerialField = new TextField("Serial");
-			TextField itemCostField = new TextField("Cost");
+			// create text fields
+			TextField vendorNameField = new TextField();
+			vendorNameField.setPromptText("Name");
+			TextField vendorAddressField = new TextField();
+			vendorAddressField.setPromptText("Address");
+			TextField vendorCityField = new TextField();
+			vendorCityField.setPromptText("City");
+			TextField vendorStateField = new TextField();
+			vendorStateField.setPromptText("State");
+			TextField vendorWebsiteField = new TextField();
+			vendorWebsiteField.setPromptText("Website");
+			TextField vendorPhoneField = new TextField();
+			vendorPhoneField.setPromptText("Phone");
+			TextField itemNameField = new TextField();
+			itemNameField.setPromptText("Name");
+			TextField itemSerialField = new TextField();
+			itemSerialField.setPromptText("Serial Number");
+			TextField itemCostField = new TextField();
+			itemCostField.setPromptText("Cost");
 			
-			TextField customerNameField = new TextField("Name");
-			TextField customerAddressField = new TextField("Address");
-			TextField customerCityField = new TextField("City");
-			TextField customerStateField = new TextField("State");
-			TextField customerPhoneField = new TextField("Phone");
+			TextField customerNameField = new TextField();
+			customerNameField.setPromptText("Name");
+			TextField customerAddressField = new TextField();
+			customerAddressField.setPromptText("Address");
+			TextField customerCityField = new TextField();
+			customerCityField.setPromptText("City");
+			TextField customerStateField = new TextField();
+			customerStateField.setPromptText("State");
+			TextField customerPhoneField = new TextField();
+			customerPhoneField.setPromptText("Phone");
 			
 
 			// element layout
@@ -117,67 +132,66 @@ public class Main extends Application {
 			itemButton.setLayoutY(120);
 			vendorButton.setLayoutX(30);
 			vendorButton.setLayoutY(160);
-			deleteButton.setLayoutX(190);
-			deleteButton.setLayoutY(390);
-			rentalInsertButton.setLayoutX(600);
-			rentalInsertButton.setLayoutY(440);
-			itemInsertButton.setLayoutX(675);
-			itemInsertButton.setLayoutY(450);
-			customerInsertButton.setLayoutX(345);
-			customerInsertButton.setLayoutY(500);
-			vendorInsertButton.setLayoutX(495);
-			vendorInsertButton.setLayoutY(500);
+			
 			rentalReturnButton.setLayoutX(315);
 			rentalReturnButton.setLayoutY(390);
+			deleteButton.setLayoutX(190);
+			deleteButton.setLayoutY(390);
+			
+			rentalInsertButton.setLayoutX(600);
+			rentalInsertButton.setLayoutY(line1);
+			itemInsertButton.setLayoutX(675);
+			itemInsertButton.setLayoutY(line1);
+			customerInsertButton.setLayoutX(345);
+			customerInsertButton.setLayoutY(line2);
+			vendorInsertButton.setLayoutX(495);
+			vendorInsertButton.setLayoutY(line2);
 			
 			outputLabel.setLayoutX(300);
-			outputLabel.setLayoutY(530);
+			outputLabel.setLayoutY(520);
 
 			rentalCustomerBox.setLayoutX(190);
-			rentalCustomerBox.setLayoutY(440);
+			rentalCustomerBox.setLayoutY(line1);
 			rentalItemBox.setLayoutX(395);
-			rentalItemBox.setLayoutY(440);
-
-			vendorNameLabel.setLayoutX(190);
-			vendorNameLabel.setLayoutY(420);
+			rentalItemBox.setLayoutY(line1);
 
 			vendorStateField.setMaxWidth(50);
 			vendorNameField.setLayoutX(190);
-			vendorNameField.setLayoutY(450);
+			vendorNameField.setLayoutY(line1);
 			vendorAddressField.setLayoutX(340);
-			vendorAddressField.setLayoutY(450);
+			vendorAddressField.setLayoutY(line1);
 			vendorCityField.setLayoutX(490);
-			vendorCityField.setLayoutY(450);
+			vendorCityField.setLayoutY(line1);
 			vendorStateField.setLayoutX(640);
-			vendorStateField.setLayoutY(450);
+			vendorStateField.setLayoutY(line1);
 			vendorWebsiteField.setLayoutX(190);
-			vendorWebsiteField.setLayoutY(500);
+			vendorWebsiteField.setLayoutY(line2);
 			vendorPhoneField.setLayoutX(340);
-			vendorPhoneField.setLayoutY(500);
+			vendorPhoneField.setLayoutY(line2);
 			
 			customerStateField.setMaxWidth(50);
 			customerNameField.setLayoutX(190);
-			customerNameField.setLayoutY(450);
+			customerNameField.setLayoutY(line1);
 			customerAddressField.setLayoutX(340);
-			customerAddressField.setLayoutY(450);
+			customerAddressField.setLayoutY(line1);
 			customerCityField.setLayoutX(490);
-			customerCityField.setLayoutY(450);
+			customerCityField.setLayoutY(line1);
 			customerStateField.setLayoutX(640);
-			customerStateField.setLayoutY(450);
+			customerStateField.setLayoutY(line1);
 			customerPhoneField.setLayoutX(190);
-			customerPhoneField.setLayoutY(500);
+			customerPhoneField.setLayoutY(line2);
 
 			itemNameField.setLayoutX(315);
-			itemNameField.setLayoutY(450);
+			itemNameField.setLayoutY(line1);
 			itemNameField.setMaxWidth(100);
 			itemSerialField.setLayoutX(420);
-			itemSerialField.setLayoutY(450);
+			itemSerialField.setLayoutY(line1);
 			itemCostField.setLayoutX(570);
-			itemCostField.setLayoutY(450);
+			itemCostField.setLayoutY(line1);
 			itemCostField.setMaxWidth(100);
 
 			itemVendorBox.setLayoutX(190);
-			itemVendorBox.setLayoutY(450);
+			itemVendorBox.setLayoutY(line1);
 			itemVendorBox.setMaxWidth(120);
 
 			// RENTAL TABLE
@@ -328,7 +342,7 @@ public class Main extends Application {
 			customerPane.getChildren().addAll(customerTable, customerNameField, customerAddressField, customerCityField, customerStateField, customerPhoneField, customerInsertButton);
 			itemPane.getChildren().addAll(itemTable, itemNameField, itemSerialField, itemCostField, itemVendorBox, itemInsertButton);
 			vendorPane.getChildren().addAll(vendorTable, vendorNameField, vendorAddressField, vendorCityField,
-					vendorStateField, vendorWebsiteField, vendorPhoneField, vendorInsertButton, vendorNameLabel);
+					vendorStateField, vendorWebsiteField, vendorPhoneField, vendorInsertButton);
 
 			// add css to scenes
 			rentalScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -403,6 +417,7 @@ public class Main extends Application {
 			EventHandler<ActionEvent> rentalInsertButtonEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
 					if (rentalCustomerBox.getSelectionModel().getSelectedItem() != null && rentalItemBox.getSelectionModel().getSelectedItem() != null) {
+					
 					Customer customerToInsert = rentalCustomerBox.getSelectionModel().getSelectedItem();
 					Item itemToInsert = rentalItemBox.getSelectionModel().getSelectedItem();
 					
@@ -430,10 +445,13 @@ public class Main extends Application {
 							for (Item aItem : itemList) {
 								itemObsList.add(aItem);
 							}
-						}}
+						}
+					} else {
+						outputLabel.setText("Could not insert Rental\nPlease make sure item is not already being rented");
+					}
 					} else {
 						outputLabel.setText(
-								"Could not insert Rental.\nPlease make sure item is not already being rented.");
+								"Please select a customer and item.");
 					}
 				}
 			};
