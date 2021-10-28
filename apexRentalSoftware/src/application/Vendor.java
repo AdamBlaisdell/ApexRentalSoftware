@@ -116,4 +116,9 @@ public class Vendor {
 		this.phoneProperty().set(phone);
 	}
 
+	@Override
+	public String toString() {
+		return this.getVendorID() + " " + this.getName();
+	}
+
 }

@@ -84,13 +84,13 @@ public class RentalDAO {
 	}
 
 	// Method to delete a Rental
-	public boolean deleteRental(int rentalID) {
+	public boolean deleteRental(Rental rental) {
 		boolean result = false;
 		String sqlStatement = new String("DELETE FROM rental WHERE rentalID = ?");
 		PreparedStatement prepSqlStatement = null;
 		try {
 			prepSqlStatement = connection.prepareStatement(sqlStatement);
-			prepSqlStatement.setString(1, String.valueOf(rentalID));
+			prepSqlStatement.setString(1, String.valueOf(rental.getRentalID()));
 			int rowCount = prepSqlStatement.executeUpdate();
 			if (rowCount != 1) {
 				result = false;
@@ -105,18 +105,29 @@ public class RentalDAO {
 	}
 
 	// Method to return a Rental
-	public static boolean returnRental(int rentalID) {
+	public static boolean returnRental(Rental rental) {
 		boolean result = false;
-		String sqlStatement = new String("DELETE FROM rental WHERE rentalID = ?");
+		String sqlStatement = new String("UPDATE Rental SET returned = 1 WHERE rentalID = ?;");
 		PreparedStatement prepSqlStatement = null;
 		try {
 			prepSqlStatement = connection.prepareStatement(sqlStatement);
-			prepSqlStatement.setString(1, String.valueOf(rentalID));
+			prepSqlStatement.setString(1, String.valueOf(rental.getRentalID()));
 			int rowCount = prepSqlStatement.executeUpdate();
 			if (rowCount != 1) {
 				result = false;
 			} else {
-				result = true;
+				try {
+					// update item stocked status
+					String sqlStatement2 = new String("UPDATE item SET Stocked = 1 WHERE itemID = ?;");
+					PreparedStatement prepSqlStatement2 = null;
+					prepSqlStatement2 = connection.prepareStatement(sqlStatement2);
+					prepSqlStatement2.setInt(1, rental.getItemID());
+					prepSqlStatement2.executeUpdate();
+					result = true;
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+					result = false;
+				}
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
