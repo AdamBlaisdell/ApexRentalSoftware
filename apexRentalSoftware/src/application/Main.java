@@ -28,18 +28,20 @@ public class Main extends Application {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage primaryStage) {
-
+		// tableview location and size
 		int tablex = 190;
 		int tabley = 15;
 		int tablew = 640;
 		int tableh = 370;
-		// text box location height(y)
+		// nav button location (x) 
+		int navx= 30;
+		// text box location (y)
 		int line1 = 430;
 		int line2 = 460;
+		// default prompt text 
 		String defaultPrompt = "Apex Rental Software Increment 4 ";
 
 		try {
-
 			// set the title
 			primaryStage.setTitle("Apex Rental Software");
 
@@ -62,59 +64,50 @@ public class Main extends Application {
 			VendorDAO vendorDAO = new VendorDAO();
 			StateDAO stateDAO = new StateDAO();
 
-			// create tableviews
-			TableView<Rental> rentalTable = new TableView<>();
-			TableView<Customer> customerTable = new TableView<>();
-			TableView<Item> itemTable = new TableView<>();
-			TableView<Vendor> vendorTable = new TableView<>();
-
-			// create buttons
+			// create navigation buttons
 			Button rentalButton = new Button("Rentals");
 			Button customerButton = new Button("Customers");
 			Button itemButton = new Button("Inventory");
 			Button vendorButton = new Button("Vendors");
+			// layout	
+			rentalButton.setLayoutX(navx);
+			rentalButton.setLayoutY(40);
+			customerButton.setLayoutX(navx);
+			customerButton.setLayoutY(80);
+			itemButton.setLayoutX(navx);
+			itemButton.setLayoutY(120);	
+			vendorButton.setLayoutX(navx);
+			
+			// create universal elements
 			Button deleteButton = new Button("Delete");
-			Button rentalInsertButton = new Button("Insert");
-			Button vendorInsertButton = new Button("Insert");
-			Button itemInsertButton = new Button("Insert");
-			Button customerInsertButton = new Button("Insert");
-			Button rentalReturnButton = new Button("Return");
+			Label outputLabel = new Label(defaultPrompt);
+			outputLabel.setId("outputLabel");
+			// layout
+			deleteButton.setLayoutX(190);
+			deleteButton.setLayoutY(390);
+			outputLabel.setLayoutX(300);
+			outputLabel.setLayoutY(520);	
+			vendorButton.setLayoutY(160);
 
-			// create combo boxes
+			// create Rental scene elements		
+			Button rentalInsertButton = new Button("Insert");	
+			Button rentalReturnButton = new Button("Return");
 			ComboBox<Customer> rentalCustomerBox = new ComboBox<>();
 			rentalCustomerBox.setPromptText("Customer");
 			ComboBox<Item> rentalItemBox = new ComboBox<>();
 			rentalItemBox.setPromptText("Item");
-			ComboBox<Vendor> itemVendorBox = new ComboBox<>();
-			itemVendorBox.setPromptText("Vendor");
-			ComboBox<State> customerStateBox = new ComboBox<>();
-			customerStateBox.setPromptText("State");
-			ComboBox<State> vendorStateBox = new ComboBox<>();
-			vendorStateBox.setPromptText("State");
-
-			// create labels
-			Label outputLabel = new Label(defaultPrompt);
-			outputLabel.setId("outputLabel");
-
-			// create text fields
-			TextField vendorNameField = new TextField();
-			vendorNameField.setPromptText("Name");
-			TextField vendorAddressField = new TextField();
-			vendorAddressField.setPromptText("Address");
-			TextField vendorCityField = new TextField();
-			vendorCityField.setPromptText("City");
-
-			TextField vendorWebsiteField = new TextField();
-			vendorWebsiteField.setPromptText("Website");
-			TextField vendorPhoneField = new TextField();
-			vendorPhoneField.setPromptText("Phone");
-			TextField itemNameField = new TextField();
-			itemNameField.setPromptText("Name");
-			TextField itemSerialField = new TextField();
-			itemSerialField.setPromptText("Serial Number");
-			TextField itemCostField = new TextField();
-			itemCostField.setPromptText("Cost");
-
+			// layout
+			rentalInsertButton.setLayoutX(600);
+			rentalInsertButton.setLayoutY(line1);
+			rentalReturnButton.setLayoutX(315);
+			rentalReturnButton.setLayoutY(390);
+			rentalCustomerBox.setLayoutX(190);
+			rentalCustomerBox.setLayoutY(line1);
+			rentalItemBox.setLayoutX(395);
+			rentalItemBox.setLayoutY(line1);
+			
+			// create  Customer scene elements
+			Button customerInsertButton = new Button("Insert");			
 			TextField customerNameField = new TextField();
 			customerNameField.setPromptText("Name");
 			TextField customerAddressField = new TextField();
@@ -123,53 +116,11 @@ public class Main extends Application {
 			customerCityField.setPromptText("City");
 			TextField customerPhoneField = new TextField();
 			customerPhoneField.setPromptText("Phone");
-
-			// element layout
-			rentalButton.setLayoutX(30);
-			rentalButton.setLayoutY(40);
-			customerButton.setLayoutX(30);
-			customerButton.setLayoutY(80);
-			itemButton.setLayoutX(30);
-			itemButton.setLayoutY(120);
-			vendorButton.setLayoutX(30);
-			vendorButton.setLayoutY(160);
-
-			rentalReturnButton.setLayoutX(315);
-			rentalReturnButton.setLayoutY(390);
-			deleteButton.setLayoutX(190);
-			deleteButton.setLayoutY(390);
-
-			rentalInsertButton.setLayoutX(600);
-			rentalInsertButton.setLayoutY(line1);
-			itemInsertButton.setLayoutX(675);
-			itemInsertButton.setLayoutY(line1);
+			ComboBox<State> customerStateBox = new ComboBox<>();
+			customerStateBox.setPromptText("State");		
+			// layout
 			customerInsertButton.setLayoutX(345);
 			customerInsertButton.setLayoutY(line2);
-			vendorInsertButton.setLayoutX(495);
-			vendorInsertButton.setLayoutY(line2);
-
-			outputLabel.setLayoutX(300);
-			outputLabel.setLayoutY(520);
-
-			rentalCustomerBox.setLayoutX(190);
-			rentalCustomerBox.setLayoutY(line1);
-			rentalItemBox.setLayoutX(395);
-			rentalItemBox.setLayoutY(line1);
-
-			vendorStateBox.setMaxWidth(130);
-			vendorNameField.setLayoutX(190);
-			vendorNameField.setLayoutY(line1);
-			vendorAddressField.setLayoutX(340);
-			vendorAddressField.setLayoutY(line1);
-			vendorCityField.setLayoutX(490);
-			vendorCityField.setLayoutY(line1);
-			vendorStateBox.setLayoutX(640);
-			vendorStateBox.setLayoutY(line1);
-			vendorWebsiteField.setLayoutX(190);
-			vendorWebsiteField.setLayoutY(line2);
-			vendorPhoneField.setLayoutX(340);
-			vendorPhoneField.setLayoutY(line2);
-
 			customerStateBox.setMaxWidth(130);
 			customerNameField.setLayoutX(190);
 			customerNameField.setLayoutY(line1);
@@ -181,7 +132,20 @@ public class Main extends Application {
 			customerStateBox.setLayoutY(line1);
 			customerPhoneField.setLayoutX(190);
 			customerPhoneField.setLayoutY(line2);
-
+			
+			// create Item scene elements
+			Button itemInsertButton = new Button("Insert");
+			TextField itemNameField = new TextField();
+			itemNameField.setPromptText("Name");
+			TextField itemSerialField = new TextField();
+			itemSerialField.setPromptText("Serial Number");
+			TextField itemCostField = new TextField();
+			itemCostField.setPromptText("Cost");
+			ComboBox<Vendor> itemVendorBox = new ComboBox<>();
+			itemVendorBox.setPromptText("Vendor");
+			// layout
+			itemInsertButton.setLayoutX(675);
+			itemInsertButton.setLayoutY(line1);
 			itemNameField.setLayoutX(315);
 			itemNameField.setLayoutY(line1);
 			itemNameField.setMaxWidth(100);
@@ -190,11 +154,47 @@ public class Main extends Application {
 			itemCostField.setLayoutX(570);
 			itemCostField.setLayoutY(line1);
 			itemCostField.setMaxWidth(100);
-
 			itemVendorBox.setLayoutX(190);
 			itemVendorBox.setLayoutY(line1);
 			itemVendorBox.setMaxWidth(120);
+			
+			// create Vendor scene elements
+			Button vendorInsertButton = new Button("Insert");			
+			TextField vendorNameField = new TextField();
+			vendorNameField.setPromptText("Name");
+			TextField vendorAddressField = new TextField();
+			vendorAddressField.setPromptText("Address");
+			TextField vendorCityField = new TextField();
+			vendorCityField.setPromptText("City");			
+			ComboBox<State> vendorStateBox = new ComboBox<>();
+			vendorStateBox.setPromptText("State");
+			TextField vendorWebsiteField = new TextField();
+			vendorWebsiteField.setPromptText("Website");
+			TextField vendorPhoneField = new TextField();
+			vendorPhoneField.setPromptText("Phone");
+			// layout
+			vendorInsertButton.setLayoutX(495);
+			vendorInsertButton.setLayoutY(line2);
+			vendorNameField.setLayoutX(190);
+			vendorNameField.setLayoutY(line1);
+			vendorAddressField.setLayoutX(340);
+			vendorAddressField.setLayoutY(line1);
+			vendorCityField.setLayoutX(490);
+			vendorCityField.setLayoutY(line1);	
+			vendorStateBox.setLayoutX(640);
+			vendorStateBox.setLayoutY(line1);	
+			vendorStateBox.setMaxWidth(130);
+			vendorWebsiteField.setLayoutX(190);
+			vendorWebsiteField.setLayoutY(line2);
+			vendorPhoneField.setLayoutX(340);
+			vendorPhoneField.setLayoutY(line2);
 
+			// create tableviews
+			TableView<Rental> rentalTable = new TableView<>();
+			TableView<Customer> customerTable = new TableView<>();
+			TableView<Item> itemTable = new TableView<>();
+			TableView<Vendor> vendorTable = new TableView<>();
+			
 			// RENTAL TABLE
 			TableColumn<Rental, Number> rentalIDColumn = new TableColumn<>("Rental ID");
 			rentalIDColumn.setCellValueFactory(cellData -> cellData.getValue().rentalIDProperty());
@@ -243,7 +243,6 @@ public class Main extends Application {
 			customerStateColumn.setCellValueFactory(cellData -> cellData.getValue().stateProperty());
 			TableColumn<Customer, String> customerPhoneColumn = new TableColumn<>("Phone #");
 			customerPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty().asString("%.0f"));
-
 			// add columns to table
 			customerTable.getColumns().addAll(customerIDColumn, customerNameColumn, customerAddressColumn,
 					customerCityColumn, customerStateColumn, customerPhoneColumn);
@@ -332,6 +331,7 @@ public class Main extends Application {
 			vendorTable.setPrefWidth(tablew);
 			vendorTable.setPrefHeight(tableh);
 			
+			// create observable list for state combobox
 			// create array list of states from DAO
 			ArrayList<State> stateList = (ArrayList<State>) stateDAO.selectAllStates();
 			// create state observable list for table
@@ -339,7 +339,7 @@ public class Main extends Application {
 			// add states to observable list from item array list
 			for (State aState : stateList) {
 				stateObsList.add(aState);
-			}
+			}		
 			// populate comboboxes with observable lists
 			rentalCustomerBox.setItems(customerObsList);
 			rentalItemBox.setItems(itemObsList);
@@ -507,7 +507,10 @@ public class Main extends Application {
 						String vendorNameToInsert = vendorNameField.getText();
 						String vendorAddressToInsert = vendorAddressField.getText();
 						String vendorCityToInsert = vendorCityField.getText();
-						String vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
+						String vendorStateToInsert = "";
+						if (vendorStateBox.getSelectionModel().getSelectedItem() != null){
+						vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
+						}
 						String vendorWebsiteToInsert = vendorWebsiteField.getText();
 						double vendorPhoneToInsert = 0;
 						try {
@@ -543,12 +546,11 @@ public class Main extends Application {
 			// insert customer action event
 			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					if (customerNameField.getText() != "") {
+					if (customerNameField.getText() != "" && customerStateBox.getSelectionModel().getSelectedItem() != null) {
 						String customerNameToInsert = customerNameField.getText();
 						String customerAddressToInsert = customerAddressField.getText();
 						String customerCityToInsert = customerCityField.getText();
 						String customerStateToInsert = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
-
 						double customerPhoneToInsert = 0;
 						try {
 							customerPhoneToInsert = Double.valueOf(customerPhoneField.getText());
@@ -561,6 +563,7 @@ public class Main extends Application {
 
 						if (customerDAO.insertCustomer(customerToInsert) == true) {
 							outputLabel.setText("Customer inserted");
+							
 							// clear text fields
 							customerNameField.clear();
 							customerAddressField.clear();
@@ -576,10 +579,10 @@ public class Main extends Application {
 								customerObsList.add(aCustomer);
 							}
 						} else {
-							outputLabel.setText("Could not insert Vendor");
+							outputLabel.setText("Could not insert Customer");
 						}
 					} else {
-						outputLabel.setText("Could not insert Vendor\nInvalid user input");
+						outputLabel.setText("Could not insert Customer\nInvalid user input");
 					}
 				}
 			};
@@ -680,6 +683,14 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-
 	}
+	
+	public static boolean isSpaces(String stringToCheck) {
+		if (stringToCheck.replaceAll("\\s", "") == "") {
+			return true;
+		} else {
+		return false;
+		}
+	}
+	
 }
