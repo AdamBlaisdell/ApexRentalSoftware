@@ -471,82 +471,39 @@ public class Main extends Application {
 			};
 			rentalInsertButton.setOnAction(rentalInsertButtonEvent);
 
-			// insert item action event
-			EventHandler<ActionEvent> insertItemActionEvent = new EventHandler<ActionEvent>() {
+			// return rental button event
+			EventHandler<ActionEvent> returnRentalEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
-					String itemNameToInsert = itemNameField.getText();
-					String itemSerialToInsert = itemSerialField.getText();
-					Double itemCostToInsert = Double.valueOf(itemCostField.getText());
-					Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert,
-							true, itemCostToInsert);
-					if (itemDAO.insertItem(itemToInsert) == true) {
-						outputLabel.setText("Item inserted");
-						// clear text fields
-						itemNameField.clear();
-						itemSerialField.clear();
-						itemCostField.clear();
-
-						// refresh item list
-						itemList.clear();
-						itemObsList.clear();
-						ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
-						for (Item aItem : itemList) {
-							itemObsList.add(aItem);
+					if (rentalTable.getSelectionModel().getSelectedItem() != null
+							&& rentalTable.getSelectionModel().getSelectedItem().isReturned() == false) {
+						if (RentalDAO.returnRental(rentalTable.getSelectionModel().getSelectedItem()) == true) {
+							outputLabel.setText("Rental Returned");
+							// refresh rental lists
+							rentalList.clear();
+							rentalObsList.clear();
+							ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
+							for (Rental aRental : rentalList) {
+								rentalObsList.add(aRental);
+							}
+							// refresh item lists
+							itemList.clear();
+							itemObsList.clear();
+							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+							for (Item aItem : itemList) {
+								itemObsList.add(aItem);
+							}
 						}
 					} else {
-						outputLabel.setText("Could not insert Item");
+						outputLabel.setText("Could not return rental");
 					}
 				}
 			};
-			itemInsertButton.setOnAction(insertItemActionEvent);
-
-			// insert vendor action event
-			EventHandler<ActionEvent> insertVendorActionEvent = new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent e) {
-						String vendorNameToInsert = vendorNameField.getText();
-						String vendorAddressToInsert = vendorAddressField.getText();
-						String vendorCityToInsert = vendorCityField.getText();
-						String vendorStateToInsert = "";
-						if (vendorStateBox.getSelectionModel().getSelectedItem() != null){
-						vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
-						}
-						String vendorWebsiteToInsert = vendorWebsiteField.getText();
-						double vendorPhoneToInsert = 0;
-						try {
-						vendorPhoneToInsert = Double.valueOf(vendorPhoneField.getText());
-						} catch(Exception ex){
-
-						}
-						Vendor vendorToInsert = new Vendor(0, vendorNameToInsert, vendorAddressToInsert,
-								vendorCityToInsert, vendorStateToInsert, vendorWebsiteToInsert, vendorPhoneToInsert);
-						if (vendorDAO.insertVendor(vendorToInsert) == true) {
-							outputLabel.setText("Vendor inserted");
-							// clear text fields
-							vendorNameField.clear();
-							vendorAddressField.clear();
-							vendorCityField.clear();
-							vendorStateBox.setValue(null);
-							vendorWebsiteField.clear();
-							vendorPhoneField.clear();
-							// refresh vendor lists
-							vendorList.clear();
-							vendorObsList.clear();
-							ArrayList<Vendor> vendorList = (ArrayList<Vendor>) vendorDAO.selectAllVendors();
-							for (Vendor aVendor : vendorList) {
-								vendorObsList.add(aVendor);
-							}
-						} else {
-							outputLabel.setText("Could not insert Vendor");
-						}
-				}
-			};
-			vendorInsertButton.setOnAction(insertVendorActionEvent);
-
+			rentalReturnButton.setOnAction(returnRentalEvent);
+			
 			// insert customer action event
 			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					if (customerNameField.getText() != "" && customerStateBox.getSelectionModel().getSelectedItem() != null) {
+					if (isSpaces(customerNameField.getText()) == false && customerStateBox.getSelectionModel().getSelectedItem() != null) {
 						String customerNameToInsert = customerNameField.getText();
 						String customerAddressToInsert = customerAddressField.getText();
 						String customerCityToInsert = customerCityField.getText();
@@ -587,35 +544,86 @@ public class Main extends Application {
 				}
 			};
 			customerInsertButton.setOnAction(insertCustomerActionEvent);
-
-			// return rental button event
-			EventHandler<ActionEvent> returnRentalEvent = new EventHandler<ActionEvent>() {
+			
+			// insert item action event
+			EventHandler<ActionEvent> insertItemActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					if (rentalTable.getSelectionModel().getSelectedItem() != null
-							&& rentalTable.getSelectionModel().getSelectedItem().isReturned() == false) {
-						if (RentalDAO.returnRental(rentalTable.getSelectionModel().getSelectedItem()) == true) {
-							outputLabel.setText("Rental Returned");
-							// refresh rental lists
-							rentalList.clear();
-							rentalObsList.clear();
-							ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
-							for (Rental aRental : rentalList) {
-								rentalObsList.add(aRental);
-							}
-							// refresh rental lists
-							itemList.clear();
-							itemObsList.clear();
-							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
-							for (Item aItem : itemList) {
-								itemObsList.add(aItem);
-							}
+					if(isSpaces(itemNameField.getText()) == false && itemVendorBox.getSelectionModel().getSelectedItem() != null) {
+					int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
+					String itemNameToInsert = itemNameField.getText();
+					String itemSerialToInsert = itemSerialField.getText();
+					double itemCostToInsert = 0;
+					try {
+					itemCostToInsert = Double.valueOf(itemCostField.getText());
+					} catch(Exception ex) {
+					}
+					Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert,
+							true, itemCostToInsert);
+					if (itemDAO.insertItem(itemToInsert) == true) {
+						outputLabel.setText("Item inserted");
+						// clear text fields
+						itemNameField.clear();
+						itemSerialField.clear();
+						itemCostField.clear();
+
+						// refresh item list
+						itemList.clear();
+						itemObsList.clear();
+						ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+						for (Item aItem : itemList) {
+							itemObsList.add(aItem);
 						}
 					} else {
-						outputLabel.setText("Could not return rental");
+						outputLabel.setText("Could not insert Item");
 					}
+					}else {outputLabel.setText("Invalid input");}
 				}
 			};
-			rentalReturnButton.setOnAction(returnRentalEvent);
+			itemInsertButton.setOnAction(insertItemActionEvent);
+
+			// insert vendor action event
+			EventHandler<ActionEvent> insertVendorActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					if(isSpaces(vendorNameField.getText()) == false) {
+						String vendorNameToInsert = vendorNameField.getText();
+						String vendorAddressToInsert = vendorAddressField.getText();
+						String vendorCityToInsert = vendorCityField.getText();
+						String vendorStateToInsert = "";
+						if (vendorStateBox.getSelectionModel().getSelectedItem() != null){
+						vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
+						}
+						String vendorWebsiteToInsert = vendorWebsiteField.getText();
+						double vendorPhoneToInsert = 0;
+						try {
+						vendorPhoneToInsert = Double.valueOf(vendorPhoneField.getText());
+						} catch(Exception ex){
+
+						}
+						Vendor vendorToInsert = new Vendor(0, vendorNameToInsert, vendorAddressToInsert,
+								vendorCityToInsert, vendorStateToInsert, vendorWebsiteToInsert, vendorPhoneToInsert);
+						if (vendorDAO.insertVendor(vendorToInsert) == true) {
+							outputLabel.setText("Vendor inserted");
+							// clear text fields
+							vendorNameField.clear();
+							vendorAddressField.clear();
+							vendorCityField.clear();
+							vendorStateBox.setValue(null);
+							vendorWebsiteField.clear();
+							vendorPhoneField.clear();
+							// refresh vendor lists
+							vendorList.clear();
+							vendorObsList.clear();
+							ArrayList<Vendor> vendorList = (ArrayList<Vendor>) vendorDAO.selectAllVendors();
+							for (Vendor aVendor : vendorList) {
+								vendorObsList.add(aVendor);
+							}
+						} else {
+							outputLabel.setText("Could not insert Vendor");
+						}
+						} else {outputLabel.setText("Invalid input");}
+				}
+			};
+			vendorInsertButton.setOnAction(insertVendorActionEvent);
 
 			// delete button event
 			EventHandler<ActionEvent> deleteButtonEvent = new EventHandler<ActionEvent>() {
@@ -686,11 +694,10 @@ public class Main extends Application {
 	}
 	
 	public static boolean isSpaces(String stringToCheck) {
-		if (stringToCheck.replaceAll("\\s", "") == "") {
+		if (stringToCheck.replaceAll("\\s", "") == "" || stringToCheck == null) {
 			return true;
 		} else {
 		return false;
 		}
 	}
-	
 }
