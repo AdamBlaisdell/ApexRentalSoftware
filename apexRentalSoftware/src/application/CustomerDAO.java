@@ -31,7 +31,7 @@ public class CustomerDAO {
 				String tempAddress = rs.getString(3);
 				String tempCity = rs.getString(4);
 				String tempState = rs.getString(5);
-				double tempPhone = rs.getDouble(6);
+				String tempPhone = rs.getString(6);
 
 				customerList.add(new Customer(tempCustomerID, tempName, tempAddress, tempCity, tempState, tempPhone));
 			}
@@ -74,7 +74,7 @@ public class CustomerDAO {
 			prepSqlStatement.setString(2, customer.getAddress());
 			prepSqlStatement.setString(3, customer.getCity());
 			prepSqlStatement.setString(4, customer.getState());
-			prepSqlStatement.setDouble(5, customer.getPhone());
+			prepSqlStatement.setString(5, customer.getPhone());
 			int rowCount = prepSqlStatement.executeUpdate();
 			if (rowCount != 1) {
 				result = false;

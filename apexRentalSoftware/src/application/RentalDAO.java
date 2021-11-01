@@ -107,7 +107,7 @@ public class RentalDAO {
 	// Method to return a Rental
 	public static boolean returnRental(Rental rental) {
 		boolean result = false;
-		String sqlStatement = new String("UPDATE Rental SET returned = 1 WHERE rentalID = ?;");
+		String sqlStatement = new String("UPDATE Rental SET returned = 1, DateTime = DateTime WHERE rentalID = ?;");
 		PreparedStatement prepSqlStatement = null;
 		try {
 			prepSqlStatement = connection.prepareStatement(sqlStatement);
