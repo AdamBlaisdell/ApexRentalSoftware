@@ -17,18 +17,18 @@ public class Vendor {
 	private final StringProperty city;
 	private final StringProperty state;
 	private final StringProperty website;
-	private final DoubleProperty phone;
+	private final StringProperty phone;
 
 	// ctor
 	public Vendor(Integer vendorID, String name, String address, String city, String state, String website,
-			Double phone) {
+			String phone) {
 		this.vendorID = new SimpleIntegerProperty(vendorID);
 		this.name = new SimpleStringProperty(name);
 		this.address = new SimpleStringProperty(address);
 		this.city = new SimpleStringProperty(city);
 		this.state = new SimpleStringProperty(state);
 		this.website = new SimpleStringProperty(website);
-		this.phone = new SimpleDoubleProperty(phone);
+		this.phone = new SimpleStringProperty(phone);
 	}
 
 	// getters, setters, and properties
@@ -104,15 +104,15 @@ public class Vendor {
 		this.websiteProperty().set(website);
 	}
 
-	public final DoubleProperty phoneProperty() {
+	public final StringProperty phoneProperty() {
 		return this.phone;
 	}
 
-	public final double getPhone() {
+	public final String getPhone() {
 		return this.phoneProperty().get();
 	}
 
-	public final void setPhone(final double phone) {
+	public final void setPhone(final String phone) {
 		this.phoneProperty().set(phone);
 	}
 

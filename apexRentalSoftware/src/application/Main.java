@@ -34,12 +34,12 @@ public class Main extends Application {
 		int tabley = 15;
 		int tablew = 640;
 		int tableh = 370;
-		// nav button location (x) 
-		int navx= 30;
+		// nav button location (x)
+		int navx = 30;
 		// text box location (y)
 		int line1 = 430;
 		int line2 = 460;
-		// default prompt text 
+		// default prompt text
 		String defaultPrompt = "Apex Rental Software Increment 4 ";
 
 		try {
@@ -70,15 +70,15 @@ public class Main extends Application {
 			Button customerButton = new Button("Customers");
 			Button itemButton = new Button("Inventory");
 			Button vendorButton = new Button("Vendors");
-			// layout	
+			// layout
 			rentalButton.setLayoutX(navx);
 			rentalButton.setLayoutY(40);
 			customerButton.setLayoutX(navx);
 			customerButton.setLayoutY(80);
 			itemButton.setLayoutX(navx);
-			itemButton.setLayoutY(120);	
+			itemButton.setLayoutY(120);
 			vendorButton.setLayoutX(navx);
-			
+
 			// create universal elements
 			Button deleteButton = new Button("Delete");
 			Label outputLabel = new Label(defaultPrompt);
@@ -87,11 +87,11 @@ public class Main extends Application {
 			deleteButton.setLayoutX(190);
 			deleteButton.setLayoutY(390);
 			outputLabel.setLayoutX(300);
-			outputLabel.setLayoutY(520);	
+			outputLabel.setLayoutY(520);
 			vendorButton.setLayoutY(160);
 
-			// create Rental scene elements		
-			Button rentalInsertButton = new Button("Insert");	
+			// create Rental scene elements
+			Button rentalInsertButton = new Button("Insert");
 			Button rentalReturnButton = new Button("Return");
 			ComboBox<Customer> rentalCustomerBox = new ComboBox<>();
 			rentalCustomerBox.setPromptText("Customer");
@@ -106,9 +106,9 @@ public class Main extends Application {
 			rentalCustomerBox.setLayoutY(line1);
 			rentalItemBox.setLayoutX(395);
 			rentalItemBox.setLayoutY(line1);
-			
-			// create  Customer scene elements
-			Button customerInsertButton = new Button("Insert");			
+
+			// create Customer scene elements
+			Button customerInsertButton = new Button("Insert");
 			TextField customerNameField = new TextField();
 			customerNameField.setPromptText("Name");
 			TextField customerAddressField = new TextField();
@@ -118,7 +118,7 @@ public class Main extends Application {
 			TextField customerPhoneField = new TextField();
 			customerPhoneField.setPromptText("Phone");
 			ComboBox<State> customerStateBox = new ComboBox<>();
-			customerStateBox.setPromptText("State");		
+			customerStateBox.setPromptText("State");
 			// layout
 			customerInsertButton.setLayoutX(345);
 			customerInsertButton.setLayoutY(line2);
@@ -133,7 +133,7 @@ public class Main extends Application {
 			customerStateBox.setLayoutY(line1);
 			customerPhoneField.setLayoutX(190);
 			customerPhoneField.setLayoutY(line2);
-			
+
 			// create Item scene elements
 			Button itemInsertButton = new Button("Insert");
 			TextField itemNameField = new TextField();
@@ -158,15 +158,15 @@ public class Main extends Application {
 			itemVendorBox.setLayoutX(190);
 			itemVendorBox.setLayoutY(line1);
 			itemVendorBox.setMaxWidth(120);
-			
+
 			// create Vendor scene elements
-			Button vendorInsertButton = new Button("Insert");			
+			Button vendorInsertButton = new Button("Insert");
 			TextField vendorNameField = new TextField();
 			vendorNameField.setPromptText("Name");
 			TextField vendorAddressField = new TextField();
 			vendorAddressField.setPromptText("Address");
 			TextField vendorCityField = new TextField();
-			vendorCityField.setPromptText("City");			
+			vendorCityField.setPromptText("City");
 			ComboBox<State> vendorStateBox = new ComboBox<>();
 			vendorStateBox.setPromptText("State");
 			TextField vendorWebsiteField = new TextField();
@@ -181,9 +181,9 @@ public class Main extends Application {
 			vendorAddressField.setLayoutX(340);
 			vendorAddressField.setLayoutY(line1);
 			vendorCityField.setLayoutX(490);
-			vendorCityField.setLayoutY(line1);	
+			vendorCityField.setLayoutY(line1);
 			vendorStateBox.setLayoutX(640);
-			vendorStateBox.setLayoutY(line1);	
+			vendorStateBox.setLayoutY(line1);
 			vendorStateBox.setMaxWidth(130);
 			vendorWebsiteField.setLayoutX(190);
 			vendorWebsiteField.setLayoutY(line2);
@@ -195,7 +195,7 @@ public class Main extends Application {
 			TableView<Customer> customerTable = new TableView<>();
 			TableView<Item> itemTable = new TableView<>();
 			TableView<Vendor> vendorTable = new TableView<>();
-			
+
 			// RENTAL TABLE
 			TableColumn<Rental, Number> rentalIDColumn = new TableColumn<>("Rental ID");
 			rentalIDColumn.setCellValueFactory(cellData -> cellData.getValue().rentalIDProperty());
@@ -209,9 +209,10 @@ public class Main extends Application {
 			rentalSerialColumn.setCellValueFactory(cellData -> cellData.getValue().serialProperty());
 			TableColumn<Rental, Timestamp> rentalDateColumn = new TableColumn<>("Date");
 			rentalDateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
-			// format date 
-			rentalDateColumn.setCellFactory(new ColumnFormatter<Rental, Timestamp>(new SimpleDateFormat("MM/dd/yy h:m a")));
-			
+			// format date
+			rentalDateColumn
+					.setCellFactory(new ColumnFormatter<Rental, Timestamp>(new SimpleDateFormat("MM/dd/yy h:m a")));
+
 			TableColumn<Rental, Boolean> rentalReturnedColumn = new TableColumn<>("Returned");
 			rentalReturnedColumn.setCellValueFactory(cellData -> cellData.getValue().returnedProperty());
 			// add columns to table
@@ -314,7 +315,7 @@ public class Main extends Application {
 			TableColumn<Vendor, String> vendorWebsiteColumn = new TableColumn<>("Website");
 			vendorWebsiteColumn.setCellValueFactory(cellData -> cellData.getValue().websiteProperty());
 			TableColumn<Vendor, String> vendorPhoneColumn = new TableColumn<>("Phone #");
-			vendorPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty().asString("%.0f"));
+			vendorPhoneColumn.setCellValueFactory(cellData -> cellData.getValue().phoneProperty());
 			// add columns to table
 			vendorTable.getColumns().addAll(vendorIDColumn, vendorNameColumn, vendorAddressColumn, vendorCityColumn,
 					vendorStateColumn, vendorWebsiteColumn, vendorPhoneColumn);
@@ -334,7 +335,7 @@ public class Main extends Application {
 			vendorTable.setLayoutY(tabley);
 			vendorTable.setPrefWidth(tablew);
 			vendorTable.setPrefHeight(tableh);
-			
+
 			// create observable list for state combobox
 			// create array list of states from DAO
 			ArrayList<State> stateList = (ArrayList<State>) stateDAO.selectAllStates();
@@ -343,7 +344,7 @@ public class Main extends Application {
 			// add states to observable list from item array list
 			for (State aState : stateList) {
 				stateObsList.add(aState);
-			}		
+			}
 			// populate comboboxes with observable lists
 			rentalCustomerBox.setItems(customerObsList);
 			rentalItemBox.setItems(itemObsList);
@@ -432,13 +433,12 @@ public class Main extends Application {
 			vendorButton.setOnAction(vendorButtonEvent);
 
 			// insert rental button event
-			EventHandler<ActionEvent> rentalInsertButtonEvent = new EventHandler<ActionEvent>() {
+			EventHandler<ActionEvent> insertRentalButtonEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
 					if (rentalCustomerBox.getSelectionModel().getSelectedItem() != null
 							&& rentalItemBox.getSelectionModel().getSelectedItem() != null) {
 						Customer customerToInsert = rentalCustomerBox.getSelectionModel().getSelectedItem();
 						Item itemToInsert = rentalItemBox.getSelectionModel().getSelectedItem();
-
 						if (itemToInsert.getStocked() == true) {
 							int customerToInsertID = customerToInsert.getCustomerID();
 							int itemIDToInsert = itemToInsert.getItemID();
@@ -473,7 +473,7 @@ public class Main extends Application {
 					}
 				}
 			};
-			rentalInsertButton.setOnAction(rentalInsertButtonEvent);
+			rentalInsertButton.setOnAction(insertRentalButtonEvent);
 
 			// return rental button event
 			EventHandler<ActionEvent> returnRentalEvent = new EventHandler<ActionEvent>() {
@@ -503,38 +503,36 @@ public class Main extends Application {
 				}
 			};
 			rentalReturnButton.setOnAction(returnRentalEvent);
-			
+
 			// insert customer action event
 			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
 					// get user input
-					String customerPhoneToInsert = customerPhoneField.getText().replace("-", "").replace("(", "").replace(")", "");	
+					String customerPhoneToInsert = customerPhoneField.getText().replace("-", "").replace("(", "")
+							.replace(")", "").replace(" ", "");
 					String customerNameToInsert = customerNameField.getText();
 					String customerAddressToInsert = customerAddressField.getText();
 					String customerCityToInsert = customerCityField.getText();
-					String customerStateToInsert = "";	
+					String customerStateToInsert = "";
 					if (customerStateBox.getSelectionModel().getSelectedItem() != null) {
 						customerStateToInsert = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
 					}
-					// format phone input
-					customerPhoneToInsert = customerPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-					
 					// if name and phone are valid
 					if (isSpaces(customerNameToInsert) == false && customerPhoneToInsert.matches("\\d{10}|^$")) {
+						// format phone input
+						customerPhoneToInsert = customerPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
+								"($1) $2-$3");
 						// create customer to insert
 						Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert,
 								customerCityToInsert, customerStateToInsert, customerPhoneToInsert);
 						// insert customer into database
 						if (customerDAO.insertCustomer(customerToInsert) == true) {
 							outputLabel.setText("Customer inserted");
-							
 							// clear text fields
 							customerNameField.clear();
 							customerAddressField.clear();
 							customerCityField.clear();
-							customerStateBox.setValue(null);
 							customerPhoneField.clear();
-
 							// refresh customer list
 							customerList.clear();
 							customerObsList.clear();
@@ -551,67 +549,152 @@ public class Main extends Application {
 				}
 			};
 			customerInsertButton.setOnAction(insertCustomerActionEvent);
-			
+
 			// insert item action event
 			EventHandler<ActionEvent> insertItemActionEvent = new EventHandler<ActionEvent>() {
-
-	public void handle(ActionEvent e) {
-		if (isSpaces(itemNameField.getText()) == false && itemVendorBox.getSelectionModel().getSelectedItem() != null) {
-			int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
-			String itemNameToInsert = itemNameField.getText();
-			String itemSerialToInsert = itemSerialField.getText();
-			double itemCostToInsert = 0;
-			try {
-				itemCostToInsert = Double.valueOf(itemCostField.getText());
-			} catch (Exception ex) {
-			}
-			Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert, true,
-					itemCostToInsert);
-			if (itemDAO.insertItem(itemToInsert) == true) {
-				outputLabel.setText("Item inserted");
-				// clear text fields
-				itemNameField.clear();
-				itemSerialField.clear();
-				itemCostField.clear();
-
-				// refresh item list
-				itemList.clear();
-				itemObsList.clear();
-				ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
-				for (Item aItem : itemList) {
-					itemObsList.add(aItem);
+				public void handle(ActionEvent e) {
+					if (isSpaces(itemNameField.getText()) == false
+							&& itemVendorBox.getSelectionModel().getSelectedItem() != null
+							&& itemCostField.getText().matches("^(\\d*\\.)?\\d+$")) {
+						int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
+						String itemNameToInsert = itemNameField.getText();
+						String itemSerialToInsert = itemSerialField.getText();
+						double itemCostToInsert = Double.valueOf(itemCostField.getText());
+						Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert,
+								true, itemCostToInsert);
+						if (itemDAO.insertItem(itemToInsert) == true) {
+							outputLabel.setText("Item inserted");
+							// clear text fields
+							itemNameField.clear();
+							itemSerialField.clear();
+							itemCostField.clear();
+							// refresh item list
+							itemList.clear();
+							itemObsList.clear();
+							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+							for (Item aItem : itemList) {
+								itemObsList.add(aItem);
+							}
+						} else {
+							outputLabel.setText("Could not insert Item");
+						}
+					} else {
+						outputLabel.setText("Invalid input");
+					}
 				}
-			} else {
-				outputLabel.setText("Could not insert Item");
-			}
-		} else {
-			outputLabel.setText("Invalid input");
+			};
+			itemInsertButton.setOnAction(insertItemActionEvent);
+
+			// insert vendor action event
+			EventHandler<ActionEvent> insertVendorActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					// get user input
+					String vendorPhoneToInsert = vendorPhoneField.getText().replace("-", "").replace("(", "")
+							.replace(")", "").replace(" ", "");
+					String vendorNameToInsert = vendorNameField.getText();
+					String vendorAddressToInsert = vendorAddressField.getText();
+					String vendorCityToInsert = vendorCityField.getText();
+					String vendorStateToInsert = "";
+					if (vendorStateBox.getSelectionModel().getSelectedItem() != null) {
+						vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
+					}
+					String vendorWebsiteToInsert = vendorWebsiteField.getText();
+					// if name and phone are valid
+					if (isSpaces(vendorNameField.getText()) == false && vendorPhoneToInsert.matches("\\d{10}|^$")) {
+						// format phone input
+						vendorPhoneToInsert = vendorPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
+								"($1) $2-$3");
+						// create vendor to insert
+						Vendor vendorToInsert = new Vendor(0, vendorNameToInsert, vendorAddressToInsert,
+								vendorCityToInsert, vendorStateToInsert, vendorWebsiteToInsert, vendorPhoneToInsert);
+						if (vendorDAO.insertVendor(vendorToInsert) == true) {
+							outputLabel.setText("Vendor inserted");
+							// clear text fields
+							vendorNameField.clear();
+							vendorAddressField.clear();
+							vendorCityField.clear();
+							vendorStateBox.setValue(null);
+							vendorWebsiteField.clear();
+							vendorPhoneField.clear();
+							// refresh vendor lists
+							vendorList.clear();
+							vendorObsList.clear();
+							ArrayList<Vendor> vendorList = (ArrayList<Vendor>) vendorDAO.selectAllVendors();
+							for (Vendor aVendor : vendorList) {
+								vendorObsList.add(aVendor);
+							}
+						} else {
+							outputLabel.setText("Could not insert Vendor");
+						}
+					} else {
+						outputLabel.setText("Invalid input");
+					}
+				}
+			};
+			vendorInsertButton.setOnAction(insertVendorActionEvent);
+
+			// delete button event
+			EventHandler<ActionEvent> deleteButtonEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					// delete from rental table
+					if (primaryStage.getScene() == rentalScene
+							&& rentalTable.getSelectionModel().getSelectedItem() != null) {
+						Rental rentalToDelete = rentalTable.getSelectionModel().getSelectedItem();
+						if (rentalToDelete.isReturned() == true) {
+							if (rentalDAO.deleteRental(rentalToDelete) == false) {
+								outputLabel.setText("Could not delete Rental");
+							} else {
+								rentalTable.getItems().removeAll(rentalToDelete);
+								outputLabel.setText("Rental Deleted");
+							}
+						} else {
+							outputLabel.setText("Could not Delete Rental, please return rental first");
+						}
+					}
+					// delete from customer table
+					if (primaryStage.getScene() == customerScene
+							&& customerTable.getSelectionModel().getSelectedItem() != null) {
+						Customer customerToDelete = customerTable.getSelectionModel().getSelectedItem();
+						if (customerDAO.deleteCustomer(customerToDelete.getCustomerID()) == false) {
+							outputLabel.setText(
+									"Could not delete customer.\nPlease make sure to delete all rentals with this customer first.");
+						} else {
+							customerTable.getItems().removeAll(customerToDelete);
+							outputLabel.setText("Customer Deleted");
+						}
+					}
+					// delete from item table
+					if (primaryStage.getScene() == itemScene
+							&& itemTable.getSelectionModel().getSelectedItem() != null) {
+						Item itemToDelete = itemTable.getSelectionModel().getSelectedItem();
+						if (itemDAO.deleteItem(itemToDelete.getItemID()) == false) {
+							outputLabel.setText(
+									"Could not delete item.\nPlease make sure to delete all rentals with this item first.");
+						} else {
+							itemTable.getItems().removeAll(itemToDelete);
+							outputLabel.setText("Item Deleted");
+						}
+					}
+					// delete from vendor table
+					if (primaryStage.getScene() == vendorScene
+							&& vendorTable.getSelectionModel().getSelectedItem() != null) {
+						Vendor vendorToDelete = vendorTable.getSelectionModel().getSelectedItem();
+						if (vendorDAO.deleteVendor(vendorToDelete.getVendorID()) == false) {
+							outputLabel.setText(
+									"Could not delete vendor.\nPlease make sure to delete all inventory items with this vendor first.");
+						} else {
+							vendorTable.getItems().removeAll(vendorToDelete);
+							outputLabel.setText("Vendor Deleted");
+						}
+					}
+				}
+			};
+			deleteButton.setOnAction(deleteButtonEvent);
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	}};itemInsertButton.setOnAction(insertItemActionEvent);
-
-	// insert vendor action event
-	EventHandler<ActionEvent> insertVendorActionEvent=new EventHandler<ActionEvent>(){public void handle(ActionEvent e){if(isSpaces(vendorNameField.getText())==false){String vendorNameToInsert=vendorNameField.getText();String vendorAddressToInsert=vendorAddressField.getText();String vendorCityToInsert=vendorCityField.getText();String vendorStateToInsert="";if(vendorStateBox.getSelectionModel().getSelectedItem()!=null){vendorStateToInsert=vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();}String vendorWebsiteToInsert=vendorWebsiteField.getText();double vendorPhoneToInsert=0;try{vendorPhoneToInsert=Double.valueOf(vendorPhoneField.getText());}catch(Exception ex){
-
-	}Vendor vendorToInsert=new Vendor(0,vendorNameToInsert,vendorAddressToInsert,vendorCityToInsert,vendorStateToInsert,vendorWebsiteToInsert,vendorPhoneToInsert);if(vendorDAO.insertVendor(vendorToInsert)==true){outputLabel.setText("Vendor inserted");
-	// clear text fields
-	vendorNameField.clear();vendorAddressField.clear();vendorCityField.clear();vendorStateBox.setValue(null);vendorWebsiteField.clear();vendorPhoneField.clear();
-	// refresh vendor lists
-	vendorList.clear();vendorObsList.clear();ArrayList<Vendor>vendorList=(ArrayList<Vendor>)vendorDAO.selectAllVendors();for(Vendor aVendor:vendorList){vendorObsList.add(aVendor);}}else{outputLabel.setText("Could not insert Vendor");}}else{outputLabel.setText("Invalid input");}}};vendorInsertButton.setOnAction(insertVendorActionEvent);
-
-	// delete button event
-	EventHandler<ActionEvent> deleteButtonEvent=new EventHandler<ActionEvent>(){public void handle(ActionEvent e){
-	// delete from rental table
-	if(primaryStage.getScene()==rentalScene&&rentalTable.getSelectionModel().getSelectedItem()!=null){Rental rentalToDelete=rentalTable.getSelectionModel().getSelectedItem();if(rentalToDelete.isReturned()==true){if(rentalDAO.deleteRental(rentalToDelete)==false){outputLabel.setText("Could not delete Rental");}else{rentalTable.getItems().removeAll(rentalToDelete);outputLabel.setText("Rental Deleted");}}else{outputLabel.setText("Could not Delete Rental, please return rental first");}}
-	// delete from customer table
-	if(primaryStage.getScene()==customerScene&&customerTable.getSelectionModel().getSelectedItem()!=null){Customer customerToDelete=customerTable.getSelectionModel().getSelectedItem();if(customerDAO.deleteCustomer(customerToDelete.getCustomerID())==false){outputLabel.setText("Could not delete customer.\nPlease make sure to delete all rentals with this customer first.");}else{customerTable.getItems().removeAll(customerToDelete);outputLabel.setText("Customer Deleted");}}
-	// delete from item table
-	if(primaryStage.getScene()==itemScene&&itemTable.getSelectionModel().getSelectedItem()!=null){Item itemToDelete=itemTable.getSelectionModel().getSelectedItem();if(itemDAO.deleteItem(itemToDelete.getItemID())==false){outputLabel.setText("Could not delete item.\nPlease make sure to delete all rentals with this item first.");}else{itemTable.getItems().removeAll(itemToDelete);outputLabel.setText("Item Deleted");}}
-	// delete from vendor table
-	if(primaryStage.getScene()==vendorScene&&vendorTable.getSelectionModel().getSelectedItem()!=null){Vendor vendorToDelete=vendorTable.getSelectionModel().getSelectedItem();if(vendorDAO.deleteVendor(vendorToDelete.getVendorID())==false){outputLabel.setText("Could not delete vendor.\nPlease make sure to delete all inventory items with this vendor first.");}else{vendorTable.getItems().removeAll(vendorToDelete);outputLabel.setText("Vendor Deleted");}}}};deleteButton.setOnAction(deleteButtonEvent);
-
-	}catch(
-	Exception e){e.printStackTrace();
-	}}
+	}
 
 	public static void main(String[] args) {
 		launch(args);

@@ -32,7 +32,7 @@ public class VendorDAO {
 				String tempCity = rs.getString(4);
 				String tempState = rs.getString(5);
 				String tempWebsite = rs.getString(6);
-				double tempPhone = rs.getDouble(7);
+				String tempPhone = rs.getString(7);
 
 				vendorList.add(
 						new Vendor(tempVendorID, tempName, tempAddress, tempCity, tempState, tempWebsite, tempPhone));
@@ -56,7 +56,7 @@ public class VendorDAO {
 			prepSqlStatement.setString(3, vendor.getCity());
 			prepSqlStatement.setString(4, vendor.getState());
 			prepSqlStatement.setString(5, vendor.getWebsite());
-			prepSqlStatement.setDouble(6, vendor.getPhone());
+			prepSqlStatement.setString(6, vendor.getPhone());
 			int rowCount = prepSqlStatement.executeUpdate();
 			if (rowCount != 1) {
 				result = false;
