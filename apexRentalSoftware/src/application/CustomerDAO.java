@@ -31,7 +31,7 @@ public class CustomerDAO {
 				String tempAddress = rs.getString(3);
 				String tempCity = rs.getString(4);
 				String tempState = rs.getString(5);
-				double tempPhone = rs.getDouble(6);
+				String tempPhone = rs.getString(6);
 
 				customerList.add(new Customer(tempCustomerID, tempName, tempAddress, tempCity, tempState, tempPhone));
 			}
@@ -62,4 +62,30 @@ public class CustomerDAO {
 		}
 		return result;
 	}
+	
+	// method to insert a Customer
+	public boolean insertCustomer(Customer customer) {
+		boolean result = false;
+		String sqlStatement = new String("INSERT INTO customer VALUES (NULL, ?, ?, ?, ?, ?)");
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);	
+			prepSqlStatement.setString(1, customer.getName());
+			prepSqlStatement.setString(2, customer.getAddress());
+			prepSqlStatement.setString(3, customer.getCity());
+			prepSqlStatement.setString(4, customer.getState());
+			prepSqlStatement.setString(5, customer.getPhone());
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1) {
+				result = false;
+			} else {
+				result = true;
+			}		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
+	
 }

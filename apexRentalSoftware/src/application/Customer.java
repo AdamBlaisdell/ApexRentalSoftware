@@ -16,16 +16,16 @@ public class Customer {
 	private final StringProperty address;
 	private final StringProperty city;
 	private final StringProperty state;
-	private final DoubleProperty phone;
+	private final StringProperty phone;
 
 	// ctor
-	public Customer(Integer customerID, String name, String address, String city, String state, Double phone) {
+	public Customer(Integer customerID, String name, String address, String city, String state, String phone) {
 		this.customerID = new SimpleIntegerProperty(customerID);
 		this.name = new SimpleStringProperty(name);
 		this.address = new SimpleStringProperty(address);
 		this.city = new SimpleStringProperty(city);
 		this.state = new SimpleStringProperty(state);
-		this.phone = new SimpleDoubleProperty(phone);
+		this.phone = new SimpleStringProperty(phone);
 	}
 
 	// getters, setters, and properties
@@ -89,15 +89,15 @@ public class Customer {
 		return this.state;
 	}
 
-	public final double getPhone() {
+	public final String getPhone() {
 		return this.phoneProperty().get();
 	}
 
-	public final void setPhone(final double phone) {
+	public final void setPhone(final String phone) {
 		this.phoneProperty().set(phone);
 	}
 
-	public final DoubleProperty phoneProperty() {
+	public final StringProperty phoneProperty() {
 		return this.phone;
 	}
 
