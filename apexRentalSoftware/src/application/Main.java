@@ -1,7 +1,7 @@
 /*
  * Apex Rental Software 
  * Author: Adam Blaisdell
- * Last Edit: 10/27/2021
+ * Last Edit: 11/10/2021
  */
 
 package application;
@@ -32,15 +32,18 @@ public class Main extends Application {
 		// tableview location and size
 		int tablex = 190;
 		int tabley = 15;
-		int tablew = 640;
+		int tablew = 660;
 		int tableh = 370;
-		// nav button location (x)
+		// nav bar location (x)
 		int navx = 30;
 		// text box location (y)
 		int line1 = 430;
 		int line2 = 460;
+		// pane size
+		int panew = 900;
+		int paneh = 600;
 		// default prompt text
-		String defaultPrompt = "Apex Rental Software Increment 4 ";
+		String defaultPrompt = "Apex Rental Software Increment 5 ";
 
 		try {
 			// set the title
@@ -53,10 +56,10 @@ public class Main extends Application {
 			Pane vendorPane = new Pane();
 
 			// create scenes
-			Scene rentalScene = new Scene(rentalPane, 850, 600);
-			Scene customerScene = new Scene(customerPane, 850, 600);
-			Scene itemScene = new Scene(itemPane, 850, 600);
-			Scene vendorScene = new Scene(vendorPane, 850, 600);
+			Scene rentalScene = new Scene(rentalPane, panew, paneh);
+			Scene customerScene = new Scene(customerPane, panew, paneh);
+			Scene itemScene = new Scene(itemPane, panew, paneh);
+			Scene vendorScene = new Scene(vendorPane, panew, paneh);
 
 			// create DAO connections
 			RentalDAO rentalDAO = new RentalDAO();
@@ -70,6 +73,7 @@ public class Main extends Application {
 			Button customerButton = new Button("Customers");
 			Button itemButton = new Button("Inventory");
 			Button vendorButton = new Button("Vendors");
+
 			// layout
 			rentalButton.setLayoutX(navx);
 			rentalButton.setLayoutY(40);
@@ -93,6 +97,7 @@ public class Main extends Application {
 			// create Rental scene elements
 			Button rentalInsertButton = new Button("Insert");
 			Button rentalReturnButton = new Button("Return");
+			Button rentalUpdateButton = new Button("Update");
 			ComboBox<Customer> rentalCustomerBox = new ComboBox<>();
 			rentalCustomerBox.setPromptText("Customer");
 			ComboBox<Item> rentalItemBox = new ComboBox<>();
@@ -102,6 +107,8 @@ public class Main extends Application {
 			rentalInsertButton.setLayoutY(line1);
 			rentalReturnButton.setLayoutX(315);
 			rentalReturnButton.setLayoutY(390);
+			rentalUpdateButton.setLayoutX(440);
+			rentalUpdateButton.setLayoutY(390);
 			rentalCustomerBox.setLayoutX(190);
 			rentalCustomerBox.setLayoutY(line1);
 			rentalItemBox.setLayoutX(395);
@@ -354,7 +361,7 @@ public class Main extends Application {
 
 			// add tables and elements to panes
 			rentalPane.getChildren().addAll(rentalTable, rentalButton, customerButton, itemButton, vendorButton,
-					deleteButton, outputLabel, rentalInsertButton, rentalCustomerBox, rentalItemBox,
+					deleteButton, outputLabel, rentalUpdateButton, rentalInsertButton, rentalCustomerBox, rentalItemBox,
 					rentalReturnButton);
 			customerPane.getChildren().addAll(customerTable, customerNameField, customerAddressField, customerCityField,
 					customerStateBox, customerPhoneField, customerInsertButton);
@@ -504,51 +511,84 @@ public class Main extends Application {
 			};
 			rentalReturnButton.setOnAction(returnRentalEvent);
 
-			// insert customer action event
-			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
-				public void handle(ActionEvent e) {
-					// get user input
-					String customerPhoneToInsert = customerPhoneField.getText().replace("-", "").replace("(", "")
-							.replace(")", "").replace(" ", "");
-					String customerNameToInsert = customerNameField.getText();
-					String customerAddressToInsert = customerAddressField.getText();
-					String customerCityToInsert = customerCityField.getText();
-					String customerStateToInsert = "";
-					if (customerStateBox.getSelectionModel().getSelectedItem() != null) {
-						customerStateToInsert = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
-					}
-					// if name and phone are valid
-					if (isSpaces(customerNameToInsert) == false && customerPhoneToInsert.matches("\\d{10}|^$")) {
-						// format phone input
-						customerPhoneToInsert = customerPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
-								"($1) $2-$3");
-						// create customer to insert
-						Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert,
-								customerCityToInsert, customerStateToInsert, customerPhoneToInsert);
-						// insert customer into database
-						if (customerDAO.insertCustomer(customerToInsert) == true) {
-							outputLabel.setText("Customer inserted");
-							// clear text fields
-							customerNameField.clear();
-							customerAddressField.clear();
-							customerCityField.clear();
-							customerPhoneField.clear();
-							// refresh customer list
-							customerList.clear();
-							customerObsList.clear();
-							ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
-							for (Customer aCustomer : customerList) {
-								customerObsList.add(aCustomer);
-							}
-						} else {
-							outputLabel.setText("Could not insert Customer");
+			// rental table selection listener
+			rentalTable.getSelectionModel().selectedItemProperty().addListener((observable) -> {
+				Rental selectedRental = rentalTable.getSelectionModel().getSelectedItem();
+				if (selectedRental != null) {
+					for (Item i : itemObsList) {
+						if (i.getItemID() == selectedRental.getItemID()) {
+							rentalItemBox.getSelectionModel().select(i);
 						}
-					} else {
-						outputLabel.setText("Could not insert Customer\nInvalid user input");
+					}
+					for (Customer c : customerObsList) {
+						if (c.getCustomerID() == selectedRental.getCustomerID()) {
+							rentalCustomerBox.getSelectionModel().select(c);
+						}
+					}
+				}
+			});
+
+			// update rental button event
+			EventHandler<ActionEvent> updateRentalEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					while (true) {
+						// condition validation
+						if (rentalTable.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select a rental to update.");
+							break;
+						}
+						if (rentalCustomerBox.getSelectionModel().getSelectedItem() == null
+								|| rentalItemBox.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select a customer and item to create a rental");
+							break;
+						}
+						
+						Rental selectedRental = rentalTable.getSelectionModel().getSelectedItem();
+						Item itemToUpdate = rentalItemBox.getSelectionModel().getSelectedItem();
+						
+						if (selectedRental.getItemID() != itemToUpdate.getItemID() && itemToUpdate.getStocked() == false) {
+							outputLabel.setText("Could not update rental, please make sure new item is not already being rented.");
+							break;
+						}
+						// get user selection
+						int itemIDToUpdate = itemToUpdate.getItemID();
+						int customerIDToUpdate = rentalCustomerBox.getSelectionModel().getSelectedItem()
+								.getCustomerID();
+						int rentalIDToUpdate = rentalTable.getSelectionModel().getSelectedItem().getRentalID();
+						// create rental object to update database
+						Rental tempRental = new Rental(rentalIDToUpdate, "null", "null", "null", "null", null, false,
+								customerIDToUpdate, itemIDToUpdate);
+						// return old item if new item is different
+						if (selectedRental.getItemID() != itemToUpdate.getItemID() && selectedRental.isReturned() == false) {
+							RentalDAO.returnRental(rentalTable.getSelectionModel().getSelectedItem());
+						}
+						// update rental 
+						if (rentalDAO.updateRental(tempRental) == true) {
+							outputLabel.setText("Rental Updated");
+
+							// refresh rental lists
+							rentalList.clear();
+							rentalObsList.clear();
+							ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
+							for (Rental aRental : rentalList) {
+								rentalObsList.add(aRental);
+							}
+							// refresh item lists
+							itemList.clear();
+							itemObsList.clear();
+							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+							for (Item aItem : itemList) {
+								itemObsList.add(aItem);
+							}
+							break;
+						} else {
+							outputLabel.setText("Could not update Rental.");
+							break;
+						}
 					}
 				}
 			};
-			customerInsertButton.setOnAction(insertCustomerActionEvent);
+			rentalUpdateButton.setOnAction(updateRentalEvent);
 
 			// insert item action event
 			EventHandler<ActionEvent> insertItemActionEvent = new EventHandler<ActionEvent>() {
@@ -602,8 +642,7 @@ public class Main extends Application {
 					// if name and phone are valid
 					if (isSpaces(vendorNameField.getText()) == false && vendorPhoneToInsert.matches("\\d{10}|^$")) {
 						// format phone input
-						vendorPhoneToInsert = vendorPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
-								"($1) $2-$3");
+						vendorPhoneToInsert = vendorPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
 						// create vendor to insert
 						Vendor vendorToInsert = new Vendor(0, vendorNameToInsert, vendorAddressToInsert,
 								vendorCityToInsert, vendorStateToInsert, vendorWebsiteToInsert, vendorPhoneToInsert);
