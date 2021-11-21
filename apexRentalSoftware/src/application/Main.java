@@ -1,7 +1,7 @@
 /*
  * Apex Rental Software 
  * Author: Adam Blaisdell
- * Last Edit: 11/10/2021
+ * Last Edit: 11/21/2021
  */
 
 package application;
@@ -12,15 +12,18 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Pane;
 import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -32,7 +35,7 @@ public class Main extends Application {
 		// tableview location and size
 		int tablex = 190;
 		int tabley = 15;
-		int tablew = 660;
+		int tablew = 700;
 		int tableh = 370;
 		// nav bar location (x)
 		int navx = 30;
@@ -40,7 +43,7 @@ public class Main extends Application {
 		int line1 = 430;
 		int line2 = 460;
 		// pane size
-		int panew = 900;
+		int panew = 950;
 		int paneh = 600;
 		// default prompt text
 		String defaultPrompt = "Apex Rental Software Increment 5 ";
@@ -90,8 +93,9 @@ public class Main extends Application {
 			// layout
 			deleteButton.setLayoutX(190);
 			deleteButton.setLayoutY(390);
-			outputLabel.setLayoutX(300);
-			outputLabel.setLayoutY(520);
+			outputLabel.setLayoutX(tablex);
+			outputLabel.setLayoutY(490);
+
 			vendorButton.setLayoutY(160);
 
 			// create Rental scene elements
@@ -107,8 +111,8 @@ public class Main extends Application {
 			rentalInsertButton.setLayoutY(line1);
 			rentalReturnButton.setLayoutX(315);
 			rentalReturnButton.setLayoutY(390);
-			rentalUpdateButton.setLayoutX(440);
-			rentalUpdateButton.setLayoutY(390);
+			rentalUpdateButton.setLayoutX(725);
+			rentalUpdateButton.setLayoutY(line1);
 			rentalCustomerBox.setLayoutX(190);
 			rentalCustomerBox.setLayoutY(line1);
 			rentalItemBox.setLayoutX(395);
@@ -116,6 +120,7 @@ public class Main extends Application {
 
 			// create Customer scene elements
 			Button customerInsertButton = new Button("Insert");
+			Button customerUpdateButton = new Button("Update");
 			TextField customerNameField = new TextField();
 			customerNameField.setPromptText("Name");
 			TextField customerAddressField = new TextField();
@@ -129,6 +134,8 @@ public class Main extends Application {
 			// layout
 			customerInsertButton.setLayoutX(345);
 			customerInsertButton.setLayoutY(line2);
+			customerUpdateButton.setLayoutX(470);
+			customerUpdateButton.setLayoutY(line2);
 			customerStateBox.setMaxWidth(130);
 			customerNameField.setLayoutX(190);
 			customerNameField.setLayoutY(line1);
@@ -143,6 +150,7 @@ public class Main extends Application {
 
 			// create Item scene elements
 			Button itemInsertButton = new Button("Insert");
+			Button itemUpdateButton = new Button("Update");
 			TextField itemNameField = new TextField();
 			itemNameField.setPromptText("Name");
 			TextField itemSerialField = new TextField();
@@ -154,10 +162,12 @@ public class Main extends Application {
 			// layout
 			itemInsertButton.setLayoutX(675);
 			itemInsertButton.setLayoutY(line1);
+			itemUpdateButton.setLayoutX(800);
+			itemUpdateButton.setLayoutY(line1);
 			itemNameField.setLayoutX(315);
 			itemNameField.setLayoutY(line1);
 			itemNameField.setMaxWidth(100);
-			itemSerialField.setLayoutX(420);
+			itemSerialField.setLayoutX(418);
 			itemSerialField.setLayoutY(line1);
 			itemCostField.setLayoutX(570);
 			itemCostField.setLayoutY(line1);
@@ -168,6 +178,7 @@ public class Main extends Application {
 
 			// create Vendor scene elements
 			Button vendorInsertButton = new Button("Insert");
+			Button vendorUpdateButton = new Button("Update");
 			TextField vendorNameField = new TextField();
 			vendorNameField.setPromptText("Name");
 			TextField vendorAddressField = new TextField();
@@ -183,6 +194,8 @@ public class Main extends Application {
 			// layout
 			vendorInsertButton.setLayoutX(495);
 			vendorInsertButton.setLayoutY(line2);
+			vendorUpdateButton.setLayoutX(620);
+			vendorUpdateButton.setLayoutY(line2);
 			vendorNameField.setLayoutX(190);
 			vendorNameField.setLayoutY(line1);
 			vendorAddressField.setLayoutX(340);
@@ -218,8 +231,8 @@ public class Main extends Application {
 			rentalDateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
 			// format date
 			rentalDateColumn
-					.setCellFactory(new ColumnFormatter<Rental, Timestamp>(new SimpleDateFormat("MM/dd/yy h:m a")));
-
+					.setCellFactory(new ColumnFormatter<Rental, Timestamp>(new SimpleDateFormat("MM/dd/yy h:mm a")));
+			rentalDateColumn.setMinWidth(40);
 			TableColumn<Rental, Boolean> rentalReturnedColumn = new TableColumn<>("Returned");
 			rentalReturnedColumn.setCellValueFactory(cellData -> cellData.getValue().returnedProperty());
 			// add columns to table
@@ -364,11 +377,11 @@ public class Main extends Application {
 					deleteButton, outputLabel, rentalUpdateButton, rentalInsertButton, rentalCustomerBox, rentalItemBox,
 					rentalReturnButton);
 			customerPane.getChildren().addAll(customerTable, customerNameField, customerAddressField, customerCityField,
-					customerStateBox, customerPhoneField, customerInsertButton);
+					customerStateBox, customerPhoneField, customerInsertButton, customerUpdateButton);
 			itemPane.getChildren().addAll(itemTable, itemNameField, itemSerialField, itemCostField, itemVendorBox,
-					itemInsertButton);
+					itemInsertButton, itemUpdateButton);
 			vendorPane.getChildren().addAll(vendorTable, vendorNameField, vendorAddressField, vendorCityField,
-					vendorStateBox, vendorWebsiteField, vendorPhoneField, vendorInsertButton);
+					vendorStateBox, vendorWebsiteField, vendorPhoneField, vendorInsertButton, vendorUpdateButton);
 
 			// add css to scenes
 			rentalScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -442,41 +455,47 @@ public class Main extends Application {
 			// insert rental button event
 			EventHandler<ActionEvent> insertRentalButtonEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					if (rentalCustomerBox.getSelectionModel().getSelectedItem() != null
-							&& rentalItemBox.getSelectionModel().getSelectedItem() != null) {
+					while (true) {
+						// validation
+						if (rentalCustomerBox.getSelectionModel().getSelectedItem() == null
+								|| rentalItemBox.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select both a customer and item to create rental with");
+							break;
+						}
 						Customer customerToInsert = rentalCustomerBox.getSelectionModel().getSelectedItem();
 						Item itemToInsert = rentalItemBox.getSelectionModel().getSelectedItem();
-						if (itemToInsert.getStocked() == true) {
-							int customerToInsertID = customerToInsert.getCustomerID();
-							int itemIDToInsert = itemToInsert.getItemID();
-							Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-							Rental tempRental = new Rental(0, "null", "null", "null", "null", currentTime, false,
-									customerToInsertID, itemIDToInsert);
-							if (rentalDAO.insertRental(tempRental) == false) {
-								outputLabel.setText("Could not insert Rental.");
-							} else {
-								outputLabel.setText("New Rental Created");
-								// refresh rental lists
-								rentalList.clear();
-								rentalObsList.clear();
-								ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
-								for (Rental aRental : rentalList) {
-									rentalObsList.add(aRental);
-								}
-								// refresh item lists
-								itemList.clear();
-								itemObsList.clear();
-								ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
-								for (Item aItem : itemList) {
-									itemObsList.add(aItem);
-								}
+						if (itemToInsert.getStocked() == false) {
+							outputLabel.setText(
+									"Could not create rental\nPlease make sure that the item is not already being rented ");
+							break;
+						}
+						int customerToInsertID = customerToInsert.getCustomerID();
+						int itemIDToInsert = itemToInsert.getItemID();
+						Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+						// create rental object to insert
+						Rental tempRental = new Rental(0, "null", "null", "null", "null", currentTime, false,
+								customerToInsertID, itemIDToInsert);
+						// insert rental
+						if (rentalDAO.insertRental(tempRental) == true) {
+							outputLabel.setText("New Rental Created");
+							// refresh rental lists
+							rentalList.clear();
+							rentalObsList.clear();
+							ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
+							for (Rental aRental : rentalList) {
+								rentalObsList.add(aRental);
+							}
+							// refresh item list
+							itemList.clear();
+							itemObsList.clear();
+							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+							for (Item aItem : itemList) {
+								itemObsList.add(aItem);
 							}
 						} else {
-							outputLabel.setText(
-									"Could not insert Rental\nPlease make sure item is not already being rented");
+							outputLabel.setText("Could not insert Rental.");
 						}
-					} else {
-						outputLabel.setText("Please select a customer and item.");
+						break;
 					}
 				}
 			};
@@ -496,7 +515,7 @@ public class Main extends Application {
 							for (Rental aRental : rentalList) {
 								rentalObsList.add(aRental);
 							}
-							// refresh item lists
+							// refresh item list
 							itemList.clear();
 							itemObsList.clear();
 							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
@@ -534,20 +553,21 @@ public class Main extends Application {
 					while (true) {
 						// condition validation
 						if (rentalTable.getSelectionModel().getSelectedItem() == null) {
-							outputLabel.setText("Please select a rental to update.");
+							outputLabel.setText("Please select a rental to update");
 							break;
 						}
 						if (rentalCustomerBox.getSelectionModel().getSelectedItem() == null
 								|| rentalItemBox.getSelectionModel().getSelectedItem() == null) {
-							outputLabel.setText("Please select a customer and item to create a rental");
+							outputLabel.setText("Please select a customer and item to update rental");
 							break;
 						}
-						
 						Rental selectedRental = rentalTable.getSelectionModel().getSelectedItem();
 						Item itemToUpdate = rentalItemBox.getSelectionModel().getSelectedItem();
-						
-						if (selectedRental.getItemID() != itemToUpdate.getItemID() && itemToUpdate.getStocked() == false) {
-							outputLabel.setText("Could not update rental, please make sure new item is not already being rented.");
+
+						if (selectedRental.getItemID() != itemToUpdate.getItemID()
+								&& itemToUpdate.getStocked() == false) {
+							outputLabel.setText(
+									"Could not update rental\nPlease make sure new item is not already being rented");
 							break;
 						}
 						// get user selection
@@ -559,13 +579,13 @@ public class Main extends Application {
 						Rental tempRental = new Rental(rentalIDToUpdate, "null", "null", "null", "null", null, false,
 								customerIDToUpdate, itemIDToUpdate);
 						// return old item if new item is different
-						if (selectedRental.getItemID() != itemToUpdate.getItemID() && selectedRental.isReturned() == false) {
+						if (selectedRental.getItemID() != itemToUpdate.getItemID()
+								&& selectedRental.isReturned() == false) {
 							RentalDAO.returnRental(rentalTable.getSelectionModel().getSelectedItem());
 						}
-						// update rental 
+						// update rental
 						if (rentalDAO.updateRental(tempRental) == true) {
 							outputLabel.setText("Rental Updated");
-
 							// refresh rental lists
 							rentalList.clear();
 							rentalObsList.clear();
@@ -573,7 +593,7 @@ public class Main extends Application {
 							for (Rental aRental : rentalList) {
 								rentalObsList.add(aRental);
 							}
-							// refresh item lists
+							// refresh item list
 							itemList.clear();
 							itemObsList.clear();
 							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
@@ -590,16 +610,172 @@ public class Main extends Application {
 			};
 			rentalUpdateButton.setOnAction(updateRentalEvent);
 
+			// insert customer action event
+			EventHandler<ActionEvent> insertCustomerActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					// get user input
+					String customerPhoneToInsert = customerPhoneField.getText().replace("-", "").replace("(", "")
+							.replace(")", "").replace(" ", "");
+					String customerNameToInsert = customerNameField.getText();
+					String customerAddressToInsert = customerAddressField.getText();
+					String customerCityToInsert = customerCityField.getText();
+					String customerStateToInsert = "";
+					if (customerStateBox.getSelectionModel().getSelectedItem() != null) {
+						customerStateToInsert = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
+					}
+
+					while (true) {
+						// validation
+						if (isSpaces(customerNameToInsert)) {
+							outputLabel.setText("Please enter a valid name");
+							break;
+						}
+						if (customerPhoneToInsert.matches("\\d{10}|^$") == false) {
+							outputLabel.setText("Please enter a valid phone number");
+							break;
+						}
+
+						// format phone input
+						customerPhoneToInsert = customerPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
+								"($1) $2-$3");
+						// create customer to insert
+						Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert,
+								customerCityToInsert, customerStateToInsert, customerPhoneToInsert);
+						// insert customer into database
+						if (customerDAO.insertCustomer(customerToInsert) == true) {
+							outputLabel.setText("Customer inserted");
+							// clear text fields
+							customerNameField.clear();
+							customerAddressField.clear();
+							customerCityField.clear();
+							customerPhoneField.clear();
+							customerStateBox.valueProperty().set(null);
+							customerStateBox.setPromptText("State");
+							// refresh customer list
+							customerList.clear();
+							customerObsList.clear();
+							ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
+							for (Customer aCustomer : customerList) {
+								customerObsList.add(aCustomer);
+							}
+						} else {
+							outputLabel.setText("Could not insert Customer");
+						}
+						break;
+					}
+				}
+			};
+			customerInsertButton.setOnAction(insertCustomerActionEvent);
+
+			// customer table selection listener
+			customerTable.getSelectionModel().selectedItemProperty().addListener((observable) -> {
+				Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+				if (selectedCustomer != null) {
+					for (State i : stateObsList) {
+						if (i.getStateCode().equals(selectedCustomer.getState())) {
+							customerStateBox.getSelectionModel().select(i);
+						}
+						customerNameField.setText(selectedCustomer.getName());
+						customerAddressField.setText(selectedCustomer.getAddress());
+						customerCityField.setText(selectedCustomer.getCity());
+						customerPhoneField.setText(selectedCustomer.getPhone());
+					}
+				}
+			});
+			// update customer action event
+			EventHandler<ActionEvent> updateCustomerActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					// get user input
+					String customerPhoneToUpdate = customerPhoneField.getText().replace("-", "").replace("(", "")
+							.replace(")", "").replace(" ", "");
+					String customerNameToUpdate = customerNameField.getText();
+					String customerAddressToUpdate = customerAddressField.getText();
+					String customerCityToUpdate = customerCityField.getText();
+					String customerStateToUpdate = "";
+					if (customerStateBox.getSelectionModel().getSelectedItem() != null) {
+						customerStateToUpdate = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
+					}
+
+					while (true) {
+						// validation
+						if (customerTable.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select a customer to update");
+							break;
+						}
+						if (isSpaces(customerNameToUpdate)) {
+							outputLabel.setText("Please enter a valid name");
+							break;
+						}
+						if (customerPhoneToUpdate.matches("\\d{10}|^$") == false) {
+							outputLabel.setText("Please enter a valid phone number");
+							break;
+						}
+
+						int customerIDToUpdate = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
+						// format phone input
+						customerPhoneToUpdate = customerPhoneToUpdate.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
+								"($1) $2-$3");
+						// create customer to update
+						Customer customerToUpdate = new Customer(customerIDToUpdate, customerNameToUpdate,
+								customerAddressToUpdate, customerCityToUpdate, customerStateToUpdate,
+								customerPhoneToUpdate);
+
+						// update customer in database
+						if (customerDAO.updateCustomer(customerToUpdate) == true) {
+							outputLabel.setText("Customer updated");
+							// clear text fields
+							customerNameField.clear();
+							customerAddressField.clear();
+							customerCityField.clear();
+							customerPhoneField.clear();
+							customerStateBox.valueProperty().set(null);
+							customerStateBox.setPromptText("State");
+							// refresh customer list
+							customerList.clear();
+							customerObsList.clear();
+							ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
+							for (Customer aCustomer : customerList) {
+								customerObsList.add(aCustomer);
+							}
+							// refresh rental lists
+							rentalList.clear();
+							rentalObsList.clear();
+							ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
+							for (Rental aRental : rentalList) {
+								rentalObsList.add(aRental);
+							}
+						} else {
+							outputLabel.setText("Could not update Customer");
+						}
+						break;
+					}
+				}
+			};
+			customerUpdateButton.setOnAction(updateCustomerActionEvent);
+
 			// insert item action event
 			EventHandler<ActionEvent> insertItemActionEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					if (isSpaces(itemNameField.getText()) == false
-							&& itemVendorBox.getSelectionModel().getSelectedItem() != null
-							&& itemCostField.getText().matches("^(\\d*\\.)?\\d+$")) {
+					String itemNameToInsert = itemNameField.getText();
+					String itemSerialToInsert = itemSerialField.getText();
+					double itemCostToInsert = 0;
+					while(true) {
+						if(itemVendorBox.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select a vendor");
+							break;
+						}
+						if(isSpaces(itemNameField.getText())) {
+							outputLabel.setText("Please enter a valid name");
+							break;
+						}
+						if(itemCostField.getText().matches("^(\\d*\\.)?\\d+$|^$") == false) {
+							outputLabel.setText("Invalid cost input");
+							break;
+						}
 						int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
-						String itemNameToInsert = itemNameField.getText();
-						String itemSerialToInsert = itemSerialField.getText();
-						double itemCostToInsert = Double.valueOf(itemCostField.getText());
+						if(isSpaces(itemCostField.getText()) == false) {
+							itemCostToInsert = Double.valueOf(itemCostField.getText());
+							}
 						Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert,
 								true, itemCostToInsert);
 						if (itemDAO.insertItem(itemToInsert) == true) {
@@ -618,12 +794,85 @@ public class Main extends Application {
 						} else {
 							outputLabel.setText("Could not insert Item");
 						}
-					} else {
-						outputLabel.setText("Invalid input");
+						break;
 					}
 				}
 			};
 			itemInsertButton.setOnAction(insertItemActionEvent);
+			
+			// item table selection listener
+			itemTable.getSelectionModel().selectedItemProperty().addListener((observable) -> {
+				Item selectedItem = itemTable.getSelectionModel().getSelectedItem();
+				if (selectedItem != null) {
+					for (Vendor i : vendorObsList) {
+						if (i.getVendorID() == selectedItem.getVendorID()) {
+							itemVendorBox.getSelectionModel().select(i);
+						}
+						itemNameField.setText(selectedItem.getName());
+						itemSerialField.setText(selectedItem.getSerial());
+						itemCostField.setText(String.valueOf(selectedItem.getCost()));
+					}
+				}
+			});
+			
+			// update item action event
+			EventHandler<ActionEvent> updateItemActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					String itemNameToInsert = itemNameField.getText();
+					String itemSerialToInsert = itemSerialField.getText();
+					double itemCostToInsert = 0;
+					while(true) {
+						if(itemTable.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select an item to update");
+							break;
+						}
+						if(itemVendorBox.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select a vendor");
+							break;
+						}
+						if(isSpaces(itemNameField.getText())) {
+							outputLabel.setText("Please enter a valid name");
+							break;
+						}
+						if(itemCostField.getText().matches("^(\\d*\\.)?\\d+$|^$") == false) {
+							outputLabel.setText("Invalid cost input");
+							break;
+						}
+						int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
+						int itemIDToUpdate = itemTable.getSelectionModel().getSelectedItem().getItemID();
+						if(isSpaces(itemCostField.getText()) == false) {
+							itemCostToInsert = Double.valueOf(itemCostField.getText());
+							}
+						Item itemToUpdate = new Item(itemIDToUpdate, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert,
+								true, itemCostToInsert);
+						if (itemDAO.updateItem(itemToUpdate) == true) {
+							outputLabel.setText("Item updated");
+							// clear text fields
+							itemNameField.clear();
+							itemSerialField.clear();
+							itemCostField.clear();
+							// refresh item list
+							itemList.clear();
+							itemObsList.clear();
+							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+							for (Item aItem : itemList) {
+								itemObsList.add(aItem);
+							}
+							// refresh rental lists
+							rentalList.clear();
+							rentalObsList.clear();
+							ArrayList<Rental> rentalList = (ArrayList<Rental>) rentalDAO.selectAllRentals();
+							for (Rental aRental : rentalList) {
+								rentalObsList.add(aRental);
+							}
+						} else {
+							outputLabel.setText("Could not update Item");
+						}
+						break;
+					}
+				}
+			};
+			itemUpdateButton.setOnAction(updateItemActionEvent);
 
 			// insert vendor action event
 			EventHandler<ActionEvent> insertVendorActionEvent = new EventHandler<ActionEvent>() {
@@ -634,13 +883,22 @@ public class Main extends Application {
 					String vendorNameToInsert = vendorNameField.getText();
 					String vendorAddressToInsert = vendorAddressField.getText();
 					String vendorCityToInsert = vendorCityField.getText();
+					String vendorWebsiteToInsert = vendorWebsiteField.getText();
 					String vendorStateToInsert = "";
 					if (vendorStateBox.getSelectionModel().getSelectedItem() != null) {
 						vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
 					}
-					String vendorWebsiteToInsert = vendorWebsiteField.getText();
-					// if name and phone are valid
-					if (isSpaces(vendorNameField.getText()) == false && vendorPhoneToInsert.matches("\\d{10}|^$")) {
+
+					while (true) {
+						// validation
+						if (isSpaces(vendorNameField.getText())) {
+							outputLabel.setText("Please enter a valid name");
+							break;
+						}
+						if (vendorPhoneToInsert.matches("\\d{10}|^$") == false) {
+							outputLabel.setText("Please enter a valid phone number");
+							break;
+						}
 						// format phone input
 						vendorPhoneToInsert = vendorPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
 						// create vendor to insert
@@ -663,15 +921,97 @@ public class Main extends Application {
 								vendorObsList.add(aVendor);
 							}
 						} else {
-							outputLabel.setText("Could not insert Vendor");
+							outputLabel.setText("Could not insert vendor");
 						}
-					} else {
-						outputLabel.setText("Invalid input");
+						break;
 					}
 				}
 			};
 			vendorInsertButton.setOnAction(insertVendorActionEvent);
-
+			
+			// vendor table selection listener
+			vendorTable.getSelectionModel().selectedItemProperty().addListener((observable) -> {
+				Vendor selectedVendor = vendorTable.getSelectionModel().getSelectedItem();
+				if (selectedVendor != null) {
+					for (State i : stateObsList) {
+						if (i.getStateCode().equals(selectedVendor.getState())) {
+							vendorStateBox.getSelectionModel().select(i);
+						}
+						vendorNameField.setText(selectedVendor.getName());
+						vendorAddressField.setText(selectedVendor.getAddress());
+						vendorCityField.setText(selectedVendor.getCity());
+						vendorPhoneField.setText(selectedVendor.getPhone());
+						vendorWebsiteField.setText(selectedVendor.getWebsite());
+					}
+				}
+			});
+			
+			// update vendor action event
+			EventHandler<ActionEvent> updateVendorActionEvent = new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					// get user input
+					String vendorPhoneToInsert = vendorPhoneField.getText().replace("-", "").replace("(", "")
+							.replace(")", "").replace(" ", "");
+					String vendorNameToInsert = vendorNameField.getText();
+					String vendorAddressToInsert = vendorAddressField.getText();
+					String vendorCityToInsert = vendorCityField.getText();
+					String vendorWebsiteToInsert = vendorWebsiteField.getText();
+					String vendorStateToInsert = "";
+					if (vendorStateBox.getSelectionModel().getSelectedItem() != null) {
+						vendorStateToInsert = vendorStateBox.getSelectionModel().getSelectedItem().getStateCode();
+					}
+					while (true) {
+						// validation
+						if(vendorTable.getSelectionModel().getSelectedItem() == null) {
+							outputLabel.setText("Please select a vendor to update");
+							break;
+						}
+						if(isSpaces(vendorNameField.getText())) {
+							outputLabel.setText("Please enter a valid name");
+							break;
+						}
+						if(vendorPhoneToInsert.matches("\\d{10}|^$") == false) {
+							outputLabel.setText("Please enter a valid phone number");
+							break;
+						}
+						// format phone input
+						vendorPhoneToInsert = vendorPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+						// create vendor to insert
+						int vendorIDToUpdate = vendorTable.getSelectionModel().getSelectedItem().getVendorID();
+						Vendor vendorToUpdate = new Vendor(vendorIDToUpdate, vendorNameToInsert, vendorAddressToInsert,
+								vendorCityToInsert, vendorStateToInsert, vendorWebsiteToInsert, vendorPhoneToInsert);
+						if (vendorDAO.updateVendor(vendorToUpdate) == true) {
+							outputLabel.setText("Vendor updated");
+							// clear text fields
+							vendorNameField.clear();
+							vendorAddressField.clear();
+							vendorCityField.clear();
+							vendorStateBox.setValue(null);
+							vendorWebsiteField.clear();
+							vendorPhoneField.clear();
+							// refresh vendor lists
+							vendorList.clear();
+							vendorObsList.clear();
+							ArrayList<Vendor> vendorList = (ArrayList<Vendor>) vendorDAO.selectAllVendors();
+							for (Vendor aVendor : vendorList) {
+								vendorObsList.add(aVendor);
+							}
+							// refresh item list
+							itemList.clear();
+							itemObsList.clear();
+							ArrayList<Item> itemList = (ArrayList<Item>) itemDAO.selectAllItems();
+							for (Item aItem : itemList) {
+								itemObsList.add(aItem);
+							}
+						} else {
+							outputLabel.setText("Could not update vendor");
+						}
+						break;
+					}
+				}
+			};
+			vendorUpdateButton.setOnAction(updateVendorActionEvent);
+			
 			// delete button event
 			EventHandler<ActionEvent> deleteButtonEvent = new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
@@ -687,7 +1027,7 @@ public class Main extends Application {
 								outputLabel.setText("Rental Deleted");
 							}
 						} else {
-							outputLabel.setText("Could not Delete Rental, please return rental first");
+							outputLabel.setText("Could not Delete Rental\nPlease return rental first");
 						}
 					}
 					// delete from customer table
@@ -696,7 +1036,7 @@ public class Main extends Application {
 						Customer customerToDelete = customerTable.getSelectionModel().getSelectedItem();
 						if (customerDAO.deleteCustomer(customerToDelete.getCustomerID()) == false) {
 							outputLabel.setText(
-									"Could not delete customer.\nPlease make sure to delete all rentals with this customer first.");
+									"Could not delete customer\nPlease make sure to delete all rentals with this customer first");
 						} else {
 							customerTable.getItems().removeAll(customerToDelete);
 							outputLabel.setText("Customer Deleted");
@@ -708,7 +1048,7 @@ public class Main extends Application {
 						Item itemToDelete = itemTable.getSelectionModel().getSelectedItem();
 						if (itemDAO.deleteItem(itemToDelete.getItemID()) == false) {
 							outputLabel.setText(
-									"Could not delete item.\nPlease make sure to delete all rentals with this item first.");
+									"Could not delete item\nPlease make sure to delete all rentals with this item first");
 						} else {
 							itemTable.getItems().removeAll(itemToDelete);
 							outputLabel.setText("Item Deleted");
@@ -720,7 +1060,7 @@ public class Main extends Application {
 						Vendor vendorToDelete = vendorTable.getSelectionModel().getSelectedItem();
 						if (vendorDAO.deleteVendor(vendorToDelete.getVendorID()) == false) {
 							outputLabel.setText(
-									"Could not delete vendor.\nPlease make sure to delete all inventory items with this vendor first.");
+									"Could not delete vendor\nPlease make sure to delete all inventory items with this vendor first");
 						} else {
 							vendorTable.getItems().removeAll(vendorToDelete);
 							outputLabel.setText("Vendor Deleted");
@@ -730,9 +1070,40 @@ public class Main extends Application {
 			};
 			deleteButton.setOnAction(deleteButtonEvent);
 
+			// state search
+			customerScene.setOnKeyPressed(e -> {
+				if (customerStateBox.isFocused() && String.valueOf(e.getCode()).length() == 1) {
+					for (State s : stateObsList) {
+						if (s.getStateCode().charAt(0) == String.valueOf(e.getCode()).charAt(0)) {
+							customerStateBox.getSelectionModel().select(s);
+							int selectedIndex = customerStateBox.getSelectionModel().getSelectedIndex();
+							ComboBoxListViewSkin<?> skin = (ComboBoxListViewSkin<?>) customerStateBox.getSkin();
+							ListView<?> list = (ListView<?>) skin.getPopupContent();
+							list.scrollTo(selectedIndex);
+							break;
+						}
+					}
+				}
+			});
+			vendorScene.setOnKeyPressed(e -> {
+				if (vendorStateBox.isFocused() && String.valueOf(e.getCode()).length() == 1) {
+					for (State s : stateObsList) {
+						if (s.getStateCode().charAt(0) == String.valueOf(e.getCode()).charAt(0)) {
+							vendorStateBox.getSelectionModel().select(s);
+							int selectedIndex = vendorStateBox.getSelectionModel().getSelectedIndex();
+							ComboBoxListViewSkin<?> skin = (ComboBoxListViewSkin<?>) vendorStateBox.getSkin();
+							ListView<?> list = (ListView<?>) skin.getPopupContent();
+							list.scrollTo(selectedIndex);
+							break;
+						}
+					}
+				}
+			});
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public static void main(String[] args) {

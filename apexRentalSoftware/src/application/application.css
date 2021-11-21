@@ -1,11 +1,21 @@
 /* JavaFX CSS  */
 
 .root{
-	-fx-background-color:"#e1e8ed";
+	-fx-background-color:#e1e8ed;
 }
 
 .table-view .column-header .label{
 	-fx-alignment:center-left;
+}
+
+.table-view .scroll-bar:horizontal * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
 }
 
 .button{
@@ -18,7 +28,7 @@
     -fx-background-insets: 0,1,2;
     -fx-background-radius: 3,2,1;
     -fx-padding: 2 20 2 20;
-    -fx-text-fill: black;
+    -fx-text-fill: #000000;
     -fx-font-size: 15px;
 }
 
