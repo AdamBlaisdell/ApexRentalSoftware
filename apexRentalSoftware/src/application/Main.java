@@ -459,7 +459,7 @@ public class Main extends Application {
 						// validation
 						if (rentalCustomerBox.getSelectionModel().getSelectedItem() == null
 								|| rentalItemBox.getSelectionModel().getSelectedItem() == null) {
-							outputLabel.setText("Please select both a customer and item to create rental with");
+							outputLabel.setText("Please select a customer and item to create the rental with");
 							break;
 						}
 						Customer customerToInsert = rentalCustomerBox.getSelectionModel().getSelectedItem();
