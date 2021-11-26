@@ -23,8 +23,8 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 public class Main extends Application {
@@ -47,7 +47,7 @@ public class Main extends Application {
 		int paneh = 600;
 		// default prompt text
 		String defaultPrompt = "Apex Rental Software Increment 5 ";
-
+		
 		try {
 			// set the title
 			primaryStage.setTitle("Apex Rental Software");
@@ -95,7 +95,6 @@ public class Main extends Application {
 			deleteButton.setLayoutY(390);
 			outputLabel.setLayoutX(tablex);
 			outputLabel.setLayoutY(490);
-
 			vendorButton.setLayoutY(160);
 
 			// create Rental scene elements
@@ -301,6 +300,10 @@ public class Main extends Application {
 			stockedColumn.setCellValueFactory(cellData -> cellData.getValue().stockedProperty());
 			TableColumn<Item, Number> costColumn = new TableColumn<>("Cost");
 			costColumn.setCellValueFactory(cellData -> cellData.getValue().costProperty());
+			// format cost
+			costColumn
+			.setCellFactory(new ColumnFormatter<Item, Number>(new DecimalFormat("0.00")));
+			
 			// add columns to table
 			itemTable.getColumns().addAll(itemIDColumn, itemVendorNameColumn, itemNameColumn, serialColumn,
 					stockedColumn, costColumn);
@@ -544,6 +547,9 @@ public class Main extends Application {
 							rentalCustomerBox.getSelectionModel().select(c);
 						}
 					}
+				} else {
+					rentalCustomerBox.setValue(null);
+					rentalItemBox.setValue(null);
 				}
 			});
 
@@ -680,6 +686,12 @@ public class Main extends Application {
 						customerCityField.setText(selectedCustomer.getCity());
 						customerPhoneField.setText(selectedCustomer.getPhone());
 					}
+				} else {
+					customerStateBox.setValue(null);
+					customerNameField.clear();
+					customerAddressField.clear();
+					customerCityField.clear();
+					customerPhoneField.clear();
 				}
 			});
 			// update customer action event
@@ -760,6 +772,7 @@ public class Main extends Application {
 					String itemSerialToInsert = itemSerialField.getText();
 					double itemCostToInsert = 0;
 					while(true) {
+						// validation
 						if(itemVendorBox.getSelectionModel().getSelectedItem() == null) {
 							outputLabel.setText("Please select a vendor");
 							break;
@@ -772,12 +785,20 @@ public class Main extends Application {
 							outputLabel.setText("Invalid cost input");
 							break;
 						}
+						if (isSpaces(itemCostField.getText()) == false){
+							if(Double.valueOf(itemCostField.getText()) > 1000000000000D) {
+								outputLabel.setText("Cost is value too large");
+								break;
+							}
+						}
+						// create item to insert
 						int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
 						if(isSpaces(itemCostField.getText()) == false) {
 							itemCostToInsert = Double.valueOf(itemCostField.getText());
 							}
 						Item itemToInsert = new Item(0, itemVendorIDToInsert, "", itemNameToInsert, itemSerialToInsert,
 								true, itemCostToInsert);
+						// insert item into database
 						if (itemDAO.insertItem(itemToInsert) == true) {
 							outputLabel.setText("Item inserted");
 							// clear text fields
@@ -810,8 +831,13 @@ public class Main extends Application {
 						}
 						itemNameField.setText(selectedItem.getName());
 						itemSerialField.setText(selectedItem.getSerial());
-						itemCostField.setText(String.valueOf(selectedItem.getCost()));
+						itemCostField.setText(String.format("%.2f", selectedItem.getCost()));
 					}
+				} else {
+					itemVendorBox.setValue(null);
+					itemNameField.clear();
+					itemSerialField.clear();
+					itemCostField.clear();
 				}
 			});
 			
@@ -836,6 +862,10 @@ public class Main extends Application {
 						}
 						if(itemCostField.getText().matches("^(\\d*\\.)?\\d+$|^$") == false) {
 							outputLabel.setText("Invalid cost input");
+							break;
+						}
+						if(Double.valueOf(itemCostField.getText()) > 1000000000000D) {
+							outputLabel.setText("Cost value is too large");
 							break;
 						}
 						int itemVendorIDToInsert = itemVendorBox.getSelectionModel().getSelectedItem().getVendorID();
@@ -943,6 +973,13 @@ public class Main extends Application {
 						vendorPhoneField.setText(selectedVendor.getPhone());
 						vendorWebsiteField.setText(selectedVendor.getWebsite());
 					}
+				} else {
+					vendorStateBox.setValue(null);
+					vendorNameField.clear();
+					vendorAddressField.clear();
+					vendorCityField.clear();
+					vendorPhoneField.clear();
+					vendorWebsiteField.clear();
 				}
 			});
 			
