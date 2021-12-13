@@ -70,7 +70,33 @@ public class VendorDAO {
 		return result;
 	}
 
-
+	// method to update a Vendor
+	public boolean updateVendor(Vendor vendor) {
+		boolean result = false;
+		String sqlStatement = new String("UPDATE vendor SET Name = ?, Address = ?, City = ?, State = ?, Website = ?, Phone = ? WHERE vendorID = ?");
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);		
+			prepSqlStatement.setString(1, vendor.getName());
+			prepSqlStatement.setString(2, vendor.getAddress());
+			prepSqlStatement.setString(3, vendor.getCity());
+			prepSqlStatement.setString(4, vendor.getState());
+			prepSqlStatement.setString(5, vendor.getWebsite());
+			prepSqlStatement.setString(6, vendor.getPhone());
+			prepSqlStatement.setInt(7, vendor.getVendorID());
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1) {
+				result = false;
+			} else {
+				result = true;
+			}		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
+	
 	// Method to delete a Vendor
 	public boolean deleteVendor(int vendorID) {
 		boolean result = false;

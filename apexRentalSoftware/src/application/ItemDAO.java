@@ -67,6 +67,31 @@ public class ItemDAO {
 		return result;
 	}
 	
+	// method to update an Item
+	public boolean updateItem(Item item) {
+		boolean result = false;
+		String sqlStatement = new String("UPDATE item SET VendorID = ?, Name = ?, Serial = ?, Cost = ? WHERE ItemID = ?");
+		PreparedStatement prepSqlStatement = null;
+		try {
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
+			prepSqlStatement.setInt(1, item.getVendorID());
+			prepSqlStatement.setString(2, item.getName());
+			prepSqlStatement.setString(3, item.getSerial());
+			prepSqlStatement.setDouble(4, item.getCost());
+			prepSqlStatement.setInt(5, item.getItemID());
+			int rowCount = prepSqlStatement.executeUpdate();
+			if (rowCount != 1) {
+				result = false;
+			} else {
+				result = true;
+			}		
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			result = false;
+		}
+		return result;
+	}
+	
 	// Method to delete an Item
 	public boolean deleteItem(int itemID) {
 		boolean result = false;
