@@ -1,4 +1,4 @@
-package application;
+package application.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import application.dao.objects.Customer;
 
 // data access object class for Customer table
 public class CustomerDAO {
@@ -62,14 +64,14 @@ public class CustomerDAO {
 		}
 		return result;
 	}
-	
+
 	// method to insert a Customer
 	public boolean insertCustomer(Customer customer) {
 		boolean result = false;
 		String sqlStatement = new String("INSERT INTO customer VALUES (NULL, ?, ?, ?, ?, ?)");
 		PreparedStatement prepSqlStatement = null;
 		try {
-			prepSqlStatement = connection.prepareStatement(sqlStatement);	
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
 			prepSqlStatement.setString(1, customer.getName());
 			prepSqlStatement.setString(2, customer.getAddress());
 			prepSqlStatement.setString(3, customer.getCity());
@@ -80,21 +82,22 @@ public class CustomerDAO {
 				result = false;
 			} else {
 				result = true;
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			result = false;
 		}
 		return result;
 	}
-	
+
 	// method to insert a Customer
 	public boolean updateCustomer(Customer customer) {
 		boolean result = false;
-		String sqlStatement = new String("UPDATE customer SET Name = ?, Address = ?, City = ?, State = ?, Phone = ? WHERE CustomerID = ?");
+		String sqlStatement = new String(
+				"UPDATE customer SET Name = ?, Address = ?, City = ?, State = ?, Phone = ? WHERE CustomerID = ?");
 		PreparedStatement prepSqlStatement = null;
 		try {
-			prepSqlStatement = connection.prepareStatement(sqlStatement);	
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
 			prepSqlStatement.setString(1, customer.getName());
 			prepSqlStatement.setString(2, customer.getAddress());
 			prepSqlStatement.setString(3, customer.getCity());
@@ -106,12 +109,12 @@ public class CustomerDAO {
 				result = false;
 			} else {
 				result = true;
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			result = false;
 		}
 		return result;
 	}
-	
+
 }

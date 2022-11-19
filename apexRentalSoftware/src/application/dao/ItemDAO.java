@@ -1,4 +1,4 @@
-package application;
+package application.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import application.dao.objects.Item;
 
 // data access object class for Item table
 public class ItemDAO {
@@ -34,7 +36,8 @@ public class ItemDAO {
 				Boolean tempStocked = rs.getBoolean(5);
 				double tempCost = rs.getDouble(6);
 
-				itemList.add(new Item(tempItemID, tempVendorID, tempVendorName, tempName, tempSerial, tempStocked, tempCost));
+				itemList.add(new Item(tempItemID, tempVendorID, tempVendorName, tempName, tempSerial, tempStocked,
+						tempCost));
 			}
 			return itemList;
 		} catch (SQLException ex) {
@@ -42,14 +45,14 @@ public class ItemDAO {
 		}
 		return null;
 	}
-	
+
 	// method to insert an Item
 	public boolean insertItem(Item item) {
 		boolean result = false;
 		String sqlStatement = new String("INSERT INTO item VALUES (NULL, ?, ?, ?, 1, ?)");
 		PreparedStatement prepSqlStatement = null;
 		try {
-			prepSqlStatement = connection.prepareStatement(sqlStatement);	
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
 			prepSqlStatement.setInt(1, item.getVendorID());
 			prepSqlStatement.setString(2, item.getName());
 			prepSqlStatement.setString(3, item.getSerial());
@@ -59,18 +62,19 @@ public class ItemDAO {
 				result = false;
 			} else {
 				result = true;
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			result = false;
 		}
 		return result;
 	}
-	
+
 	// method to update an Item
 	public boolean updateItem(Item item) {
 		boolean result = false;
-		String sqlStatement = new String("UPDATE item SET VendorID = ?, Name = ?, Serial = ?, Cost = ? WHERE ItemID = ?");
+		String sqlStatement = new String(
+				"UPDATE item SET VendorID = ?, Name = ?, Serial = ?, Cost = ? WHERE ItemID = ?");
 		PreparedStatement prepSqlStatement = null;
 		try {
 			prepSqlStatement = connection.prepareStatement(sqlStatement);
@@ -84,14 +88,14 @@ public class ItemDAO {
 				result = false;
 			} else {
 				result = true;
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			result = false;
 		}
 		return result;
 	}
-	
+
 	// Method to delete an Item
 	public boolean deleteItem(int itemID) {
 		boolean result = false;

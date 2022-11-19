@@ -1,4 +1,4 @@
-package application;
+package application.dao.objects;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -7,45 +7,38 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-// Vendor object class with javafx properties
-public class Vendor {
+// Customer object class with javafx properties
+public class Customer {
 
 	// attributes
-	private final IntegerProperty vendorID;
+	private final IntegerProperty customerID;
 	private final StringProperty name;
 	private final StringProperty address;
 	private final StringProperty city;
 	private final StringProperty state;
-	private final StringProperty website;
 	private final StringProperty phone;
 
 	// ctor
-	public Vendor(Integer vendorID, String name, String address, String city, String state, String website,
-			String phone) {
-		this.vendorID = new SimpleIntegerProperty(vendorID);
+	public Customer(Integer customerID, String name, String address, String city, String state, String phone) {
+		this.customerID = new SimpleIntegerProperty(customerID);
 		this.name = new SimpleStringProperty(name);
 		this.address = new SimpleStringProperty(address);
 		this.city = new SimpleStringProperty(city);
 		this.state = new SimpleStringProperty(state);
-		this.website = new SimpleStringProperty(website);
 		this.phone = new SimpleStringProperty(phone);
 	}
 
 	// getters, setters, and properties
-	public final IntegerProperty vendorIDProperty() {
-		return this.vendorID;
+	public final int getCustomerID() {
+		return this.customerIDProperty().get();
 	}
 
-	public final int getVendorID() {
-		return this.vendorIDProperty().get();
+	public final void setCustomerID(final int customerID) {
+		this.customerIDProperty().set(customerID);
 	}
 
-	public final void setVendorID(final int vendorID) {
-		this.vendorIDProperty().set(vendorID);
-	}
-
-	public final StringProperty nameProperty() {
-		return this.name;
+	public final IntegerProperty customerIDProperty() {
+		return this.customerID;
 	}
 
 	public final String getName() {
@@ -56,8 +49,8 @@ public class Vendor {
 		this.nameProperty().set(name);
 	}
 
-	public final StringProperty addressProperty() {
-		return this.address;
+	public final StringProperty nameProperty() {
+		return this.name;
 	}
 
 	public final String getAddress() {
@@ -68,8 +61,8 @@ public class Vendor {
 		this.addressProperty().set(address);
 	}
 
-	public final StringProperty cityProperty() {
-		return this.city;
+	public final StringProperty addressProperty() {
+		return this.address;
 	}
 
 	public final String getCity() {
@@ -80,8 +73,8 @@ public class Vendor {
 		this.cityProperty().set(city);
 	}
 
-	public final StringProperty stateProperty() {
-		return this.state;
+	public final StringProperty cityProperty() {
+		return this.city;
 	}
 
 	public final String getState() {
@@ -92,20 +85,8 @@ public class Vendor {
 		this.stateProperty().set(state);
 	}
 
-	public final StringProperty websiteProperty() {
-		return this.website;
-	}
-
-	public final String getWebsite() {
-		return this.websiteProperty().get();
-	}
-
-	public final void setWebsite(final String website) {
-		this.websiteProperty().set(website);
-	}
-
-	public final StringProperty phoneProperty() {
-		return this.phone;
+	public final StringProperty stateProperty() {
+		return this.state;
 	}
 
 	public final String getPhone() {
@@ -116,9 +97,13 @@ public class Vendor {
 		this.phoneProperty().set(phone);
 	}
 
+	public final StringProperty phoneProperty() {
+		return this.phone;
+	}
+
 	@Override
 	public String toString() {
-		return this.getVendorID() + " " + this.getName();
+		return this.customerID.get() + " " + this.name.get();
 	}
 
 }

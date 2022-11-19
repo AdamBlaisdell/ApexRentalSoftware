@@ -1,4 +1,4 @@
-package application;
+package application.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import application.dao.objects.Rental;
+
 import java.sql.Timestamp;
 
 // data access object class for Rental table
@@ -135,11 +138,12 @@ public class RentalDAO {
 		}
 		return result;
 	}
-	
+
 	// Method to update a Rental
 	public boolean updateRental(Rental rental) {
 		boolean result = false;
-		String sqlStatement = new String("UPDATE rental SET CustomerID = ?, ItemID = ?, Returned = 0 WHERE rental.RentalID = ?");
+		String sqlStatement = new String(
+				"UPDATE rental SET CustomerID = ?, ItemID = ?, Returned = 0 WHERE rental.RentalID = ?");
 		PreparedStatement prepSqlStatement = null;
 		try {
 			prepSqlStatement = connection.prepareStatement(sqlStatement);

@@ -1,4 +1,4 @@
-package application;
+package application.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import application.dao.objects.Vendor;
 
 // data access object class for Vendor table
 public class VendorDAO {
@@ -43,14 +45,14 @@ public class VendorDAO {
 		}
 		return null;
 	}
-	
+
 	// method to insert a Vendor
 	public boolean insertVendor(Vendor vendor) {
 		boolean result = false;
 		String sqlStatement = new String("INSERT INTO vendor VALUES (NULL, ?, ?, ?, ?, ?, ?)");
 		PreparedStatement prepSqlStatement = null;
 		try {
-			prepSqlStatement = connection.prepareStatement(sqlStatement);		
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
 			prepSqlStatement.setString(1, vendor.getName());
 			prepSqlStatement.setString(2, vendor.getAddress());
 			prepSqlStatement.setString(3, vendor.getCity());
@@ -62,7 +64,7 @@ public class VendorDAO {
 				result = false;
 			} else {
 				result = true;
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			result = false;
@@ -73,10 +75,11 @@ public class VendorDAO {
 	// method to update a Vendor
 	public boolean updateVendor(Vendor vendor) {
 		boolean result = false;
-		String sqlStatement = new String("UPDATE vendor SET Name = ?, Address = ?, City = ?, State = ?, Website = ?, Phone = ? WHERE vendorID = ?");
+		String sqlStatement = new String(
+				"UPDATE vendor SET Name = ?, Address = ?, City = ?, State = ?, Website = ?, Phone = ? WHERE vendorID = ?");
 		PreparedStatement prepSqlStatement = null;
 		try {
-			prepSqlStatement = connection.prepareStatement(sqlStatement);		
+			prepSqlStatement = connection.prepareStatement(sqlStatement);
 			prepSqlStatement.setString(1, vendor.getName());
 			prepSqlStatement.setString(2, vendor.getAddress());
 			prepSqlStatement.setString(3, vendor.getCity());
@@ -89,14 +92,14 @@ public class VendorDAO {
 				result = false;
 			} else {
 				result = true;
-			}		
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			result = false;
 		}
 		return result;
 	}
-	
+
 	// Method to delete a Vendor
 	public boolean deleteVendor(int vendorID) {
 		boolean result = false;

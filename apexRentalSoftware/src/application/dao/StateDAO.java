@@ -1,4 +1,4 @@
-package application;
+package application.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import application.dao.objects.State;
 
 // data access object class for Rental table
 public class StateDAO {

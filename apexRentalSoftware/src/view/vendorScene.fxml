@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+	fx:controller="application.controllers.VendorSceneController">
+
+	<HBox>
+	<TableView fx:id="vendorTable">
+	<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+		<columns>
+		 	<TableColumn fx:id="vendorIdColumn" text="Vendor ID"/>
+            <TableColumn fx:id="vendorNameColumn" text="Name"/>
+            <TableColumn fx:id="vendorAddressColumn" text="Address"/>
+            <TableColumn fx:id="vendorCityColumn" text="City"/>
+            <TableColumn fx:id="vendorStateColumn" text="State"/>
+            <TableColumn fx:id="vendorWebsiteColumn" text="Website"/>
+            <TableColumn fx:id="vendorPhoneColumn" text="Phone #"/>
+            
+		</columns>
+	</TableView>
+	</HBox>
+	
+	<HBox>
+	<Button fx:id="vendorDeleteButton" onAction="#vendorDeleteButtonEvent" text="Delete"/>
+	</HBox>
+	
+	<HBox>
+	<TextField fx:id="vendorNameField" promptText="Name"/>
+	<TextField fx:id="vendorAddressField" promptText="Address"/>
+	<TextField fx:id="vendorCityField" promptText="City"/>
+	<ComboBox fx:id="vendorStateBox" promptText="State"/>
+	</HBox>
+	
+	<HBox>
+		<TextField fx:id="vendorWebsiteField" promptText="Website"/>
+		<TextField fx:id="vendorPhoneField" promptText="Phone"/>
+		<Button fx:id="vendorInsertButton" onAction="#vendorInsertButtonEvent" text="Insert"/>
+		<Button fx:id="vendorUpdateButton" onAction="#vendorUpdateButtonEvent" text="Update"/>
+	</HBox>
+	
+	<HBox>
+	<Label fx:id="outputLabel"/>
+	</HBox>
+
+</VBox>

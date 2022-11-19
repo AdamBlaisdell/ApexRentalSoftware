@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+	fx:controller="application.controllers.RentalSceneController">
+
+	<HBox>
+	<TableView fx:id="rentalTable">
+	<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+		<columns>
+		 	<TableColumn fx:id="rentalIdColumn" text="Rental ID"/>
+            <TableColumn fx:id="rentalCustomerNameColumn" text="Customer"/>
+            <TableColumn fx:id="rentalVendorNameColumn" text="Vendor"/>
+            <TableColumn fx:id="rentalItemNameColumn" text="Item"/>
+            <TableColumn fx:id="rentalItemSerialColumn" text="Serial #"/>
+            <TableColumn fx:id="rentalDateColumn" text="Date"/>
+            <TableColumn fx:id="rentalReturnedColumn" text="Returned"/>
+		</columns>
+	</TableView>
+	</HBox>
+	
+	<HBox>
+	<Button fx:id="rentalDeleteButton" onAction="#deleteRentalButtonEvent" text="Delete"/>
+	<Button fx:id="rentalReturnButton" onAction="#returnRentalButtonEvent" text="Return"/>
+	</HBox>
+	
+	<HBox>
+	<ComboBox fx:id="rentalCustomerBox" promptText="Customer"/>
+	<ComboBox fx:id="rentalItemBox" promptText="Item"/>
+	<Button fx:id="rentalInsertButton" onAction="#insertRentalButtonEvent" text="Insert"/>
+	<Button fx:id="rentalUpdateButton" onAction="#updateRentalButtonEvent" text="Update"/>
+	</HBox>
+	
+	<HBox>
+	<Label fx:id="outputLabel"/>
+	</HBox>
+
+</VBox>

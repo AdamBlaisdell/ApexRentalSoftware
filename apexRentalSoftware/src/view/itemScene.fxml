@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+	fx:controller="application.controllers.ItemSceneController">
+
+	<HBox>
+	<TableView fx:id="itemTable">
+	<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+		<columns>
+		 	<TableColumn fx:id="itemIDColumn" text="Rental ID"/>
+            <TableColumn fx:id="vendorNameColumn" text="Vendor"/>
+            <TableColumn fx:id="itemNameColumn" text="Name"/>
+            <TableColumn fx:id="itemSerialColumn" text="Serial #"/>
+            <TableColumn fx:id="itemStockedColumn" text="Stocked"/>
+            <TableColumn fx:id="itemCostColumn" text="Cost"/>
+		</columns>
+	</TableView>
+	</HBox>
+	
+	<HBox>
+	<Button fx:id="itemDeleteButton" onAction="#itemDeleteButtonEvent" text="Delete"/>
+	</HBox>
+	
+	<HBox>
+	
+	<ComboBox fx:id="itemVendorBox" promptText="Vendor"/>
+	<TextField fx:id="itemNameField" promptText="Name"/>
+	<TextField fx:id="itemSerialField" promptText="Serial Number"/>
+	<TextField fx:id="itemCostField" promptText="Cost"/>
+	
+	<Button fx:id="itemInsertButton" onAction="#itemInsertButtonEvent" text="Insert"/>
+	<Button fx:id="itemUpdateButton" onAction="#itemUpdateButtonEvent" text="Update"/>
+	
+	</HBox>
+	
+	<HBox>
+	<Label fx:id="outputLabel"/>
+	</HBox>
+
+</VBox>

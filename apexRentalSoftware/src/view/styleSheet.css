@@ -1,10 +1,28 @@
 /* JavaFX CSS  */
 
-.root{
+.root {
 	-fx-background-color:#e1e8ed;
 }
 
-.table-view .column-header .label{
+HBox{
+	-fx-spacing:5;
+	-fx-padding:5;	
+}
+
+VBox{
+	-fx-padding:30 0 0 0;
+}
+
+#navPane {
+	-fx-pref-width:200;
+}
+
+.table-view {
+	-fx-min-width: 800;
+	-fx-min-height:370 ;
+}
+
+.table-view .column-header .label {
 	-fx-alignment:center-left;
 }
 
@@ -18,25 +36,32 @@
     -fx-max-height: 0;
 }
 
-.button{
+.text-field {
+	-fx-background-insets:1;
+	-fx-padding:7;
+	-fx-font-size:12;
+}
+
+.button {
 	-fx-pref-width:120;
-	-fx-font-size:16;
 	    -fx-background-color: 
         #3c7fb1,
 		#c9e8ff,
         linear-gradient(#e8f5ff 0%, #cfeaff 49%, #b8e0ff 50%, #a1d5ff 100%);
     -fx-background-insets: 0,1,2;
     -fx-background-radius: 3,2,1;
-    -fx-padding: 2 20 2 20;
+    -fx-padding: 5 5 5 5;
     -fx-text-fill: #000000;
-    -fx-font-size: 15px;
+    -fx-font-size: 15;
 }
 
-.combo-box{
+.combo-box {
 	-fx-pref-width: 200;
-	
+	-fx-padding:3;
+	-fx-background-insets:2;
+	-fx-font-size:13;
 }
 
-#outputLabel{
+#outputLabel {
 	-fx-font-size:17;
 }

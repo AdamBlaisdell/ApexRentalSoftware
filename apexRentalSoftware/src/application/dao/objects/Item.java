@@ -1,4 +1,4 @@
-package application;
+package application.dao.objects;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;

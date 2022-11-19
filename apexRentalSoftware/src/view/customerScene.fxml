@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml"
+	fx:controller="application.controllers.CustomerSceneController">
+<HBox>
+	<TableView fx:id="customerTable">
+	<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+		<columns>
+		 	<TableColumn fx:id="customerIdColumn" text="Customer ID"/>
+            <TableColumn fx:id="customerNameColumn" text="Name"/>
+            <TableColumn fx:id="customerAddressColumn" text="Address"/>
+            <TableColumn fx:id="customerCityColumn" text="City"/>
+            <TableColumn fx:id="customerStateColumn" text="State"/>
+            <TableColumn fx:id="customerPhoneColumn" text="Phone #"/>
+		</columns>
+	</TableView>
+</HBox>
+	<HBox>
+	<Button fx:id="customerDeleteButton" onAction="#customerDeleteButtonEvent" text="Delete"/>
+	</HBox>
+	
+	<HBox>
+	<TextField fx:id="customerNameField" promptText ="Name"/>
+	<TextField fx:id="customerAddressField" promptText ="Address"/>
+	<TextField fx:id="customerCityField" promptText ="City"/>
+	<ComboBox fx:id="customerStateBox" promptText="State"/>
+	</HBox>
+	
+	<HBox>
+	<TextField fx:id="customerPhoneField" promptText ="Phone"/>
+	<Button fx:id="customerInsertButton" onAction="#customerInsertButtonEvent" text="Insert"/>
+	<Button fx:id="customerUpdateButton" onAction="#customerUpdateButtonEvent" text="Update"/>
+	</HBox>
+
+	<HBox>
+	<Label fx:id="outputLabel"/>
+	</HBox>
+	
+	
+	
+
+</VBox>
