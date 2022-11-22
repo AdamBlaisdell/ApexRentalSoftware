@@ -1,6 +1,5 @@
 package application.controllers;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -185,6 +184,7 @@ public class VendorSceneController implements Initializable{
 					vendorCityToInsert, vendorStateToInsert, vendorWebsiteToInsert, vendorPhoneToInsert);
 			if (vendorDAO.updateVendor(vendorToUpdate) == true) {
 				outputLabel.setText("Vendor updated");
+				
 				// clear text fields
 				vendorNameField.clear();
 				vendorAddressField.clear();
@@ -192,6 +192,7 @@ public class VendorSceneController implements Initializable{
 				vendorStateBox.setValue(null);
 				vendorWebsiteField.clear();
 				vendorPhoneField.clear();
+				
 				// refresh vendor lists
 				vendorList.clear();
 				vendorObsList.clear();

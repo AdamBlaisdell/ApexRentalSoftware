@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.ColumnFormatter;
 import application.dao.*;
 import application.dao.objects.*;
 import javafx.collections.FXCollections;

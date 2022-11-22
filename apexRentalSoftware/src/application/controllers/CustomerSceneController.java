@@ -128,6 +128,7 @@ public class CustomerSceneController implements Initializable  {
 					// insert customer into database
 					if (customerDAO.insertCustomer(customerToInsert) == true) {
 						outputLabel.setText("Customer inserted");
+						
 						// clear text fields
 						customerNameField.clear();
 						customerAddressField.clear();
@@ -146,6 +147,7 @@ public class CustomerSceneController implements Initializable  {
 						outputLabel.setText("Could not insert Customer");
 					}
 	}
+	
 	
 	public void customerUpdateButtonEvent() {
 		

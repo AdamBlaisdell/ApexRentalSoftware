@@ -1,4 +1,4 @@
-package application;
+package application.controllers;
 import java.text.Format;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
