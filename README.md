@@ -7,9 +7,9 @@ and vendors that the user can create, read, update, and delete through the GUI.
 <br>
 
 <br>
-<br>
-<image src="images/apexui.png" width="300px">
-<br>
+
+<image src="images/apexui.png" width="600px">
+
 
 #### What I Learned
 
