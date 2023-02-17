@@ -107,7 +107,7 @@ public class RentalDAO {
 		return result;
 	}
 
-	// Method to return a Rental
+	// method to return a Rental
 	public static boolean returnRental(Rental rental) {
 		boolean result = false;
 		String sqlStatement = new String("UPDATE Rental SET returned = 1, DateTime = DateTime WHERE rentalID = ?;");
@@ -139,7 +139,7 @@ public class RentalDAO {
 		return result;
 	}
 
-	// Method to update a Rental
+	// method to update a Rental
 	public boolean updateRental(Rental rental) {
 		boolean result = false;
 		String sqlStatement = new String(

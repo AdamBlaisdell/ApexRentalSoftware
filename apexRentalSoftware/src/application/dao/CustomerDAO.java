@@ -44,7 +44,7 @@ public class CustomerDAO {
 		return null;
 	}
 
-	// Method to delete a Customer
+	// method to delete a Customer
 	public boolean deleteCustomer(int customerID) {
 		boolean result = false;
 		String sqlStatement = new String("DELETE FROM customer WHERE customerID = ?");
@@ -90,7 +90,7 @@ public class CustomerDAO {
 		return result;
 	}
 
-	// method to insert a Customer
+	// method to update a Customer
 	public boolean updateCustomer(Customer customer) {
 		boolean result = false;
 		String sqlStatement = new String(

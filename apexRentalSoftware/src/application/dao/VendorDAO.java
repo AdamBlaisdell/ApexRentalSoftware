@@ -100,7 +100,7 @@ public class VendorDAO {
 		return result;
 	}
 
-	// Method to delete a Vendor
+	// method to delete a Vendor
 	public boolean deleteVendor(int vendorID) {
 		boolean result = false;
 		String sqlStatement = new String("DELETE FROM vendor WHERE vendorID = ?");

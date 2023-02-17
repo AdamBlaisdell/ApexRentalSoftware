@@ -1,4 +1,5 @@
 package application.controllers;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -7,8 +8,6 @@ import application.dao.StateDAO;
 import application.dao.objects.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,8 +18,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class CustomerSceneController implements Initializable  {
-	
+public class CustomerSceneController implements Initializable {
+
 	@FXML private ComboBox<State> customerStateBox;
 	@FXML private Button customerInsertButton;
 	@FXML private Button customerUpdateButton;
@@ -39,18 +38,19 @@ public class CustomerSceneController implements Initializable  {
 	@FXML private TableColumn<Customer, String> customerStateColumn;
 	@FXML private TableColumn<Customer, String> customerPhoneColumn;
 	
+	// get customers from database and add to observable list
 	CustomerDAO customerDAO = new CustomerDAO();
-	StateDAO stateDAO = new StateDAO();
-	
 	ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
-	ObservableList<Customer> customerObsList = FXCollections.observableArrayList();
+	ObservableList<Customer> customerObsList = FXCollections.observableArrayList(customerList);
 	
+	// get states from database and add to observable list
+	StateDAO stateDAO = new StateDAO();
 	ArrayList<State> stateList = (ArrayList<State>) stateDAO.selectAllStates();
-	ObservableList<State> stateObsList = FXCollections.observableArrayList();
-	
+	ObservableList<State> stateObsList = FXCollections.observableArrayList(stateList);
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		outputLabel.setText("Apex Rental Software increment 6");
 
 		customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerID"));
@@ -59,20 +59,11 @@ public class CustomerSceneController implements Initializable  {
 		customerCityColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("city"));
 		customerStateColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("state"));
 		customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phone"));
-		
-		
-		// populate table and lists with observable lists
-		for (Customer aCustomer : customerList) {
-			customerObsList.add(aCustomer);
-		}
+
+		// populate table and lists
 		customerTable.setItems(customerObsList);
-		
-		for (State aState : stateList) {
-			stateObsList.add(aState);
-		}
 		customerStateBox.setItems(stateObsList);
-		
-		
+
 		// customer table selection listener
 		customerTable.getSelectionModel().selectedItemProperty().addListener((observable) -> {
 			Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
@@ -87,73 +78,62 @@ public class CustomerSceneController implements Initializable  {
 					customerPhoneField.setText(selectedCustomer.getPhone());
 				}
 			} else {
-				customerStateBox.setValue(null);
-				customerNameField.clear();
-				customerAddressField.clear();
-				customerCityField.clear();
-				customerPhoneField.clear();
+				// clear fields and boxes
+				ControlHelper.clearInput(customerTable);
 			}
 		});
-		
+
 	}
-	
+
 	public void customerInsertButtonEvent() {
-				// get user input
-				String customerPhoneToInsert = customerPhoneField.getText().replace("-", "").replace("(", "")
-						.replace(")", "").replace(" ", "");
-				String customerNameToInsert = customerNameField.getText();
-				String customerAddressToInsert = customerAddressField.getText();
-				String customerCityToInsert = customerCityField.getText();
-				String customerStateToInsert = "";
-				if (customerStateBox.getSelectionModel().getSelectedItem() != null) {
-					customerStateToInsert = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
-				}
-
-					// validation
-					if (ControlHelper.isSpaces(customerNameToInsert)) {
-						outputLabel.setText("Please enter a valid name");
-						return;
-					}
-					if (customerPhoneToInsert.matches("\\d{10}|^$") == false) {
-						outputLabel.setText("Please enter a valid phone number");
-						return;
-					}
-
-					// format phone input
-					customerPhoneToInsert = customerPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
-							"($1) $2-$3");
-					// create customer to insert
-					Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert,
-							customerCityToInsert, customerStateToInsert, customerPhoneToInsert);
-					// insert customer into database
-					if (customerDAO.insertCustomer(customerToInsert) == true) {
-						outputLabel.setText("Customer inserted");
-						
-						// clear text fields
-						customerNameField.clear();
-						customerAddressField.clear();
-						customerCityField.clear();
-						customerPhoneField.clear();
-						customerStateBox.valueProperty().set(null);
-						customerStateBox.setPromptText("State");
-						// refresh customer list
-						customerList.clear();
-						customerObsList.clear();
-						ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
-						for (Customer aCustomer : customerList) {
-							customerObsList.add(aCustomer);
-						}
-					} else {
-						outputLabel.setText("Could not insert Customer");
-					}
-	}
-	
-	
-	public void customerUpdateButtonEvent() {
-		
 		// get user input
-		String customerPhoneToUpdate = customerPhoneField.getText().replace("-", "").replace("(", "")
-				.replace(")", "").replace(" ", "");
+		String customerPhoneToInsert = customerPhoneField.getText().replace("-", "").replace("(", "").replace(")", "")
+				.replace(" ", "");
+		String customerNameToInsert = customerNameField.getText();
+		String customerAddressToInsert = customerAddressField.getText();
+		String customerCityToInsert = customerCityField.getText();
+		String customerStateToInsert = "";
+		if (customerStateBox.getSelectionModel().getSelectedItem() != null) {
+			customerStateToInsert = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
+		}
+
+		// validation
+		if (ControlHelper.isSpaces(customerNameToInsert)) {
+			outputLabel.setText("Please enter a valid name");
+			return;
+		}
+		if (customerPhoneToInsert.matches("\\d{10}|^$") == false) {
+			outputLabel.setText("Please enter a valid phone number");
+			return;
+		}
+
+		// format phone input
+		customerPhoneToInsert = customerPhoneToInsert.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+		// create customer to insert
+		Customer customerToInsert = new Customer(0, customerNameToInsert, customerAddressToInsert, customerCityToInsert,
+				customerStateToInsert, customerPhoneToInsert);
+		// insert customer into database
+		if (customerDAO.insertCustomer(customerToInsert) == true) {
+			outputLabel.setText("Customer inserted");
+			
+			// refresh customer list
+			customerList.clear();
+			customerObsList.clear();
+			ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
+			for (Customer aCustomer : customerList) {
+				customerObsList.add(aCustomer);
+			}
+		} else {
+			outputLabel.setText("Could not insert Customer");
+		}
+	}
+
+
+	public void customerUpdateButtonEvent() {
+
+		// get user input
+		String customerPhoneToUpdate = customerPhoneField.getText().replace("-", "").replace("(", "").replace(")", "")
+				.replace(" ", "");
 		String customerNameToUpdate = customerNameField.getText();
 		String customerAddressToUpdate = customerAddressField.getText();
 		String customerCityToUpdate = customerCityField.getText();
@@ -162,60 +142,49 @@ public class CustomerSceneController implements Initializable  {
 			customerStateToUpdate = customerStateBox.getSelectionModel().getSelectedItem().getStateCode();
 		}
 
-		while (true) {
-			// validation
-			if (customerTable.getSelectionModel().getSelectedItem() == null) {
-				outputLabel.setText("Please select a customer to update");
-				return;
-			}
-			if (ControlHelper.isSpaces(customerNameToUpdate)) {
-				outputLabel.setText("Please enter a valid name");
-				return;
-			}
-			if (customerPhoneToUpdate.matches("\\d{10}|^$") == false) {
-				outputLabel.setText("Please enter a valid phone number");
-				return;
-			}
-
-			int customerIDToUpdate = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
-			// format phone input
-			customerPhoneToUpdate = customerPhoneToUpdate.replaceFirst("(\\d{3})(\\d{3})(\\d+)",
-					"($1) $2-$3");
-			// create customer to update
-			Customer customerToUpdate = new Customer(customerIDToUpdate, customerNameToUpdate,
-					customerAddressToUpdate, customerCityToUpdate, customerStateToUpdate,
-					customerPhoneToUpdate);
-
-			// update customer in database
-			if (customerDAO.updateCustomer(customerToUpdate) == true) {
-				outputLabel.setText("Customer updated");
-				// clear text fields
-				customerNameField.clear();
-				customerAddressField.clear();
-				customerCityField.clear();
-				customerPhoneField.clear();
-				customerStateBox.valueProperty().set(null);
-				customerStateBox.setPromptText("State");
-				// refresh customer list
-				customerList.clear();
-				customerObsList.clear();
-				ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
-				for (Customer aCustomer : customerList) {
-					customerObsList.add(aCustomer);
-				}
-
-			} else {
-				outputLabel.setText("Could not update Customer");
-			}
+		// validation
+		if (customerTable.getSelectionModel().getSelectedItem() == null) {
+			outputLabel.setText("Please select a customer to update");
+			return;
 		}
-		
+		if (ControlHelper.isSpaces(customerNameToUpdate)) {
+			outputLabel.setText("Please enter a valid name");
+			return;
+		}
+		if (customerPhoneToUpdate.matches("\\d{10}|^$") == false) {
+			outputLabel.setText("Please enter a valid phone number");
+			return;
+		}
+
+		// get id of customer
+		int customerIDToUpdate = customerTable.getSelectionModel().getSelectedItem().getCustomerID();
+		// format phone input
+		customerPhoneToUpdate = customerPhoneToUpdate.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+		// create customer to update
+		Customer customerToUpdate = new Customer(customerIDToUpdate, customerNameToUpdate, customerAddressToUpdate,
+				customerCityToUpdate, customerStateToUpdate, customerPhoneToUpdate);
+
+		// update customer in database
+		if (customerDAO.updateCustomer(customerToUpdate) == true) {
+			outputLabel.setText("Customer updated");
+			
+			// refresh customer list
+			customerList.clear();
+			customerObsList.clear();
+			ArrayList<Customer> customerList = (ArrayList<Customer>) customerDAO.selectAllCustomers();
+			for (Customer aCustomer : customerList) {
+				customerObsList.add(aCustomer);
+			}
+			
+		} else {
+			outputLabel.setText("Could not update Customer");
+		}
 	}
-	
+
 	public void customerDeleteButtonEvent() {
-		
 		if (customerTable.getSelectionModel().getSelectedItem() != null) {
 			Customer customerToDelete = customerTable.getSelectionModel().getSelectedItem();
-			
+
 			if (customerDAO.deleteCustomer(customerToDelete.getCustomerID()) == false) {
 				outputLabel.setText(
 						"Could not delete customer\nPlease make sure to delete all rentals with this customer first");
@@ -224,7 +193,7 @@ public class CustomerSceneController implements Initializable  {
 				outputLabel.setText("Customer Deleted");
 			}
 		}
-		
+
 	}
-	
+
 }

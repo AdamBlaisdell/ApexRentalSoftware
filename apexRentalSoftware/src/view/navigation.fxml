@@ -10,7 +10,7 @@
 	fx:controller="application.controllers.NavigationController"
 	id="navPane">
 	
-	<Button fx:id="rentalSceneButton" onAction="#rentalSceneButtonEvent" layoutX="30" layoutY="50" text="Rentals"/>
+	<Button fx:id="rentalSceneButton" id="activeButton" onAction="#rentalSceneButtonEvent" layoutX="30" layoutY="50" text="Rentals"/>
 	<Button fx:id="customerSceneButton" onAction="#customerSceneButtonEvent" layoutX="30" layoutY="90" text="Customers"/>
 	<Button fx:id="itemSceneButton" onAction="#itemSceneButtonEvent" layoutX="30" layoutY="130" text="Inventory"/>
 	<Button fx:id="vendorSceneButton" onAction="#vendorSceneButtonEvent" layoutX="30" layoutY="170" text="Vendors"/>

@@ -96,7 +96,7 @@ public class ItemDAO {
 		return result;
 	}
 
-	// Method to delete an Item
+	// method to delete an Item
 	public boolean deleteItem(int itemID) {
 		boolean result = false;
 		String sqlStatement = new String("DELETE FROM item WHERE itemID = ?");

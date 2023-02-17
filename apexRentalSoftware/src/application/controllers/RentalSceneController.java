@@ -99,8 +99,8 @@ public class RentalSceneController implements Initializable {
 					}
 				}
 			} else {
-				rentalCustomerBox.setValue(null);
-				rentalItemBox.setValue(null);
+				// clear fields and boxes
+				ControlHelper.clearInput(rentalTable);
 			}
 		});
 

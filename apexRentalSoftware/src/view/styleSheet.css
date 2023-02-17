@@ -55,6 +55,19 @@ VBox{
     -fx-font-size: 15;
 }
 
+#activeButton {
+	-fx-pref-width:120;
+	    -fx-background-color: 
+        #0033cc,
+		#c9e8ff,
+        linear-gradient(#e8f5ff 0%, #cfeaff 49%, #b8e0ff 50%, #a1d5ff 100%);
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 3,2,1;
+    -fx-padding: 5 5 5 5;
+    -fx-text-fill: #000000;
+    -fx-font-size: 15;
+}
+
 .combo-box {
 	-fx-pref-width: 200;
 	-fx-padding:3;
