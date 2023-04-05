@@ -9,7 +9,7 @@ and vendors that the user can create, read, update, and delete through the GUI.
 <br>
 
 <image src="images/apexui.png" width="600px">
-
+<image src="images/erd_diagram.png" width="600px">
 
 #### What I Learned
 
